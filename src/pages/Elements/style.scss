@@ -1,0 +1,152 @@
+.detail {
+  max-width: auto;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #121212;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #e0e0e0;
+
+  a {
+    display: inline-block;
+    margin-bottom: 1rem;
+    color: #61dafb;
+    text-decoration: none;
+    font-weight: 500;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: #ffffff;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+    margin-top: 2rem;
+    margin-bottom: 0.8rem;
+    color: #cccccc;
+  }
+
+  /* 🔹 Bọc preview + code để xếp ngang */
+  .row {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: flex-start; /* cho thẳng hàng trên cùng */
+    margin-bottom: 1rem;
+  }
+
+  .preview {
+    flex: 1; /* chiếm đều không gian */
+    border: 1px solid #333;
+    border-radius: 12px;
+    height: 300px;
+    background-color: #1e1e1e;
+  }
+
+  pre {
+    flex: 1; /* code cũng chiếm đều không gian */
+    background-color: #1f1f1f;
+    color: #f0f0f0;
+    padding: 1rem;
+    border-radius: 10px;
+    overflow-x: auto;
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+
+  button {
+    margin-top: 0.5rem;
+    padding: 0.5rem 1.2rem;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #dcdcdc;
+    background: linear-gradient(
+      180deg,
+      rgb(56, 56, 56) 0%,
+      rgb(36, 36, 36) 66%,
+      rgb(41, 41, 41) 100%
+    );
+    border: none;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+
+    &:hover {
+      background: linear-gradient(
+        180deg,
+        rgb(70, 70, 70) 0%,
+        rgb(50, 50, 50) 66%,
+        rgb(55, 55, 55) 100%
+      );
+      transform: translateY(-2px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}
+.detail .row {
+  display: flex;
+  gap: 1rem; /* khoảng cách giữa preview và code */
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  width: 84%;
+}
+
+.detail .preview {
+  flex: 1; /* preview chiếm 1 phần */
+  min-height: 300px;
+}
+
+.detail pre {
+  flex: 1;
+  width: 140%;
+  height: 500px;
+  overflow: auto;
+}
+.element-tabs {
+  .tab-header {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+
+    button {
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      background-color: #2a2a2a;
+      color: #ccc;
+      font-weight: 500;
+      transition: all 0.2s;
+
+      &.active {
+        background-color: #61dafb;
+        color: #121212;
+      }
+
+      &:hover {
+        background-color: #3a3a3a;
+      }
+    }
+  }
+
+  .tab-content {
+    pre {
+      background-color: #1f1f1f;
+      padding: 1rem;
+      border-radius: 8px;
+      overflow-x: auto;
+    }
+  }
+}
