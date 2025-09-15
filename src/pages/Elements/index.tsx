@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import "./style.scss";
 import { elementsMock } from "../../mockData/home";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 export interface IElement {
   id: number;
@@ -34,7 +36,15 @@ const ElementDetail = () => {
           <iframe
             title={element.title}
             className="preview big"
-            srcDoc={`<style>${element.css}</style>${element.html}`}
+            srcDoc={`<style>
+              body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            }${element.css}</style>
+            ${element.html}`}
           />
         </div>
         <div className="flex item">
@@ -56,8 +66,21 @@ const ElementDetail = () => {
             </div>
           </div>
           <div className="tab-content">
-            {activeTab === "html" && <pre>{element.html}</pre>}
-            {activeTab === "css" && <pre>{element.css}</pre>}
+            {activeTab === "html" && (
+              <SyntaxHighlighter
+                language="html"
+                style={oneDark}
+                showLineNumbers
+              >
+                {element.html ?? ""}
+              </SyntaxHighlighter>
+            )}
+
+            {activeTab === "css" && (
+              <SyntaxHighlighter language="css" style={oneDark} showLineNumbers>
+                {element.css}
+              </SyntaxHighlighter>
+            )}
           </div>
         </div>
       </div>

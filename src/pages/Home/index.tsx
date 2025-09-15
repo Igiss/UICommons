@@ -10,11 +10,10 @@ export interface IElement {
   reactCode: string;
   html?: string;
 }
+
 const Home = () => {
   const [search, setSearch] = useState("");
   const [elements, setElements] = useState<IElement[]>([]);
-  // search => Biến lưu dữ liệu
-  // setSearch => Function để set lại dữ liệu của biến "search"
 
   const filtered = elements.filter((el) =>
     el.title.toLowerCase().includes(search.toLowerCase())
@@ -22,21 +21,22 @@ const Home = () => {
 
   useEffect(() => {
     setElements(elementsMock);
-    console.log("REnder........."); // KHi nào cần thực hiện tác vụ trước khi render UI
-  }, []); // [] mặc định khi component này render thì nó sẽ chạy lần đầu
+    console.log("Render.........");
+  }, []);
 
   return (
     <div className="home">
-      <h1>Uiverse</h1>
+      <div className="header">
+        <h1>UICommons</h1>
+        {/* Nút Create */}
+        <button className="create-btn">+ Create</button>
+      </div>
 
       <input
         type="text"
-        placeholder="🔍 Tìm component..."
+        placeholder="Tìm component..."
         value={search}
-        onChange={(e) => {
-          console.log("🚀🚀🚀🚀🚀🚀🚀🚀🚀 ~ e.target.value:", e.target.value);
-          setSearch(e.target.value);
-        }}
+        onChange={(e) => setSearch(e.target.value)}
         className="search"
       />
 
@@ -46,7 +46,26 @@ const Home = () => {
             <iframe
               title={el.title}
               className="preview"
-              srcDoc={`<style>${el.css}</style>${el.html}`}
+              srcDoc={`
+          <html>
+            <head>
+              <style>
+                body {
+                  
+                  display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+                }
+                ${el.css}
+              </style>
+            </head>
+            <body>
+              ${el.html}
+            </body>
+          </html>
+        `}
             />
           </Link>
         ))}
