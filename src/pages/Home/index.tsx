@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./style.scss";
 import { elementsMock } from "../../mockData/home";
-// nhớ export default trong login.tsx
+import ElementPreview from "../../pages/ElementPreview";
 
 export interface IElement {
   id: number;
@@ -38,29 +38,7 @@ const Home = () => {
       <div className="grid">
         {filtered.map((el) => (
           <Link to={`/element/${el.id}`} key={el.id} className="card">
-            <iframe
-              title={el.title}
-              className="preview"
-              srcDoc={`
-          <html>
-            <head>
-              <style>
-                body {
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                  height: 100vh;
-                  margin: 0;
-                }
-                ${el.css}
-              </style>
-            </head>
-            <body>
-              ${el.html}
-            </body>
-          </html>
-        `}
-            />
+            <ElementPreview html={el.html} css={el.css} />
           </Link>
         ))}
       </div>
