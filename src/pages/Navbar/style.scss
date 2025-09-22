@@ -1,0 +1,63 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  background: #000;
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  .logo {
+    font-size: 20px;
+    font-weight: bold;
+    text-decoration: none;
+    color: white;
+    border: 1px solid white;
+    padding: 4px 8px;
+    border-radius: 6px;
+
+    .ui {
+      color: #7c3aed;
+    }
+  }
+
+  .menu {
+    list-style: none;
+    display: flex;
+    gap: 24px;
+    margin-left: 24px; // giữ khoảng cách với logo
+
+    li a {
+      text-decoration: none;
+      color: white;
+      font-weight: 500;
+
+      &:hover {
+        color: #7c3aed;
+      }
+    }
+  }
+
+  .actions {
+    margin-left: auto; // đẩy riêng actions ra ngoài cùng bên phải
+    display: flex;
+    align-items: center;
+
+    .create-btn {
+      background: #7c3aed;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+
+      &:hover {
+        background: #5b21b6;
+      }
+    }
+  }
+}

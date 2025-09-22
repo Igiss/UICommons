@@ -1,4 +1,4 @@
-import "../Login/login.scss";
+import "../Login/style.scss";
 
 interface LoginModalProps {
   onClose: () => void;
