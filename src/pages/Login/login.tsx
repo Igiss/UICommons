@@ -1,7 +1,8 @@
-import "./loginModal.css";
+import "../Login/login.scss";
 
 interface LoginModalProps {
   onClose: () => void;
+  onLogin: () => void;
 }
 
 const LoginModal: React.FC<LoginModalProps> = ({ onClose }) => {
