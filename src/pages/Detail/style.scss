@@ -1,0 +1,144 @@
+// File: src/pages/Detail/style.scss (Phiên bản đã sửa lỗi và tối ưu)
+
+// --- BIẾN VÀ THIẾT LẬP CHUNG ---
+$primary-color: #61dafb;
+$background-color: #121212;
+$surface-color: #1e1e1e;
+$text-color: #e0e0e0;
+$border-color: #333;
+
+// --- CONTAINER CHÍNH ---
+.detail {
+  max-width: 1400px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: $background-color;
+  border-radius: 12px;
+  color: $text-color;
+
+  a {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    color: $primary-color;
+    text-decoration: none;
+    font-weight: 500;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  h1 {
+    margin-bottom: 2rem;
+  }
+}
+
+// --- BỐ CỤC CHÍNH (2 CỘT) ---
+// Sử dụng Flexbox để chia layout thành 2 cột: Preview và Code Viewer
+.detail__row {
+  display: flex;
+  gap: 2rem; // Khoảng cách giữa 2 cột
+  align-items: stretch; // Quan trọng: làm cho 2 cột có chiều cao bằng nhau
+  min-height: 600px; // Chiều cao tối thiểu cho layout
+}
+
+// --- CỘT BÊN TRÁI: PREVIEW ---
+.detail__preview {
+  flex: 0.9; // Chiếm 1 nửa không gian
+  border: 1px solid $border-color;
+  border-radius: 8px;
+  overflow: hidden; // Đảm bảo iframe không tràn ra ngoài
+
+  .preview-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background-color: white; // Nền trắng để dễ xem component
+  }
+}
+
+// --- CỘT BÊN PHẢI: CODE VIEWER ---
+.detail__code-viewer {
+  flex: 1.1; // Chiếm 1 nửa không gian còn lại
+  display: flex; // Sử dụng flexbox để các thành phần bên trong (tabs) co giãn
+  flex-direction: column; // Sắp xếp theo chiều dọc
+  min-width: 0; // Fix lỗi flexbox overflow
+}
+
+// --- KHU VỰC TABS (HTML/CSS) ---
+.tabs {
+  display: flex;
+  flex-direction: column;
+  height: 100%; // Quan trọng: làm cho tabs chiếm toàn bộ chiều cao của cột cha
+
+  &__header {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  &__button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    background-color: #2a2a2a;
+    color: #ccc;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: #3a3a3a;
+    }
+
+    &--active {
+      background-color: $primary-color;
+      color: $background-color;
+    }
+  }
+
+  // Quan trọng: Làm cho khu vực chứa code chiếm hết không gian còn lại
+  .tabs__content {
+    border-radius: 8px;
+    background-color: $surface-color;
+    overflow: hidden; // Giúp bo góc hoạt động đúng
+
+    pre {
+      height: 500px;
+      margin: 0 !important;
+
+      // Thư viện dùng table để tạo số dòng, chúng ta style nó
+      // Đoạn code này sẽ tạo ra padding để các dòng xuống hàng được thụt lề
+      code {
+        // Quan trọng: Áp dụng các quy tắc xuống dòng ở đây
+        white-space: pre-wrap !important;
+        overflow-wrap: break-word !important;
+        font-family: "Fira Code", Consolas, Monaco, monospace !important;
+      }
+    }
+  }
+
+  // --- KHU VỰC REACT CODE (NẾU CÓ) ---
+  .detail__react-code {
+    margin-top: 2rem;
+    h3 {
+      margin-bottom: 1rem;
+    }
+    .copy-button {
+      margin-top: 1rem;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #dcdcdc;
+      background-color: #333;
+      border: 1px solid #444;
+      cursor: pointer;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: #444;
+      }
+    }
+  }
+}

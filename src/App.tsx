@@ -1,0 +1,28 @@
+// File: src/App.js (Phiên bản đúng)
+
+import { Suspense } from "react";
+import { Route, Routes } from "react-router-dom";
+import ElementDetail from "./pages/Detail";
+import Home from "./pages/Home";
+import Navbar from "./pages/Navbar";
+import Elements from "./pages/Element";
+import LoginSuccess from "./pages/Login/LoginSuccess";
+
+function App() {
+  return (
+    <Suspense fallback={<div>Loading page...</div>}>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/elements" element={<Elements />} />
+        <Route path="/element/:id" element={<ElementDetail />} />
+        <Route path="/login/success" element={<LoginSuccess />} />
+        {/* Route /preview đã được xóa bỏ vì nó là code cũ gây lỗi */}
+        <Route path="*" element={<div>404 Not Found</div>} />
+      </Routes>
+    </Suspense>
+  );
+}
+
+export default App;
