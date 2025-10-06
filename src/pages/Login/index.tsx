@@ -1,3 +1,4 @@
+import { FaGithub, FaGoogle, FaDiscord } from "react-icons/fa";
 import "../Login/style.scss";
 
 interface LoginModalProps {
@@ -6,35 +7,36 @@ interface LoginModalProps {
 }
 
 const LoginModal: React.FC<LoginModalProps> = ({ onClose }) => {
-  // Hàm xử lý đăng nhập bằng Google
   const handleGoogleLogin = () => {
-    // URL này trỏ đến backend NestJS của bạn đã làm ở các bước trước
     window.location.href = "http://localhost:3000/auth/google";
   };
 
-  // (Tương tự cho GitHub nếu bạn đã làm)
   const handleGitHubLogin = () => {
     window.location.href = "http://localhost:3000/auth/github";
+  };
+
+  const handleDisCordLogin = () => {
+    window.location.href = "http://localhost:3000/auth/discord";
   };
 
   return (
     <div className="modal-overlay">
       <div className="modal-content">
         <button className="close-btn" onClick={onClose}>
-          ×
+          &times; {/* Sử dụng ký tự 'times' cho dấu X đẹp hơn */}
         </button>
         <h2>Join the Community</h2>
         <p>Create beautiful UI elements and share them with developers</p>
         <div className="btn-group">
-          {/* Thêm onClick handler vào các nút */}
-          <button className="github" onClick={handleGitHubLogin}>
-            Continue with GitHub
+          {/* Thêm icon vào các nút */}
+          <button className="btn github" onClick={handleGitHubLogin}>
+            <FaGithub /> Continue with GitHub
           </button>
-          <button className="google" onClick={handleGoogleLogin}>
-            Continue with Google
+          <button className="btn google" onClick={handleGoogleLogin}>
+            <FaGoogle /> Continue with Google
           </button>
-          <button className="x" disabled>
-            Continue with X
+          <button className="btn discord" onClick={handleDisCordLogin}>
+            <FaDiscord /> Continue with Discord
           </button>
         </div>
         <p className="footer">

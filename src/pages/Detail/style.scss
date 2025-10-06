@@ -117,6 +117,16 @@ $border-color: #333;
       }
     }
   }
+  .cm-gutters {
+    background: #1e1e1e !important;
+    color: #999 !important;
+    border-right: 1px solid #333 !important;
+  }
+
+  .cm-lineNumbers {
+    min-width: 3em; /* giữ số dòng thẳng hàng */
+    text-align: right;
+  }
 
   // --- KHU VỰC REACT CODE (NẾU CÓ) ---
   .detail__react-code {

@@ -1,11 +1,15 @@
-// File: src/pages/Detail/index.tsx (Chỉ cần sửa 1 dòng)
-
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
-import "./style.scss"; // Đảm bảo bạn đã import file SCSS
-import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
+import "./style.scss";
+
+// CodeMirror
+import CodeMirror from "@uiw/react-codemirror";
+import { vscodeDark } from "@uiw/codemirror-theme-vscode";
+import { html } from "@codemirror/lang-html";
+import { css } from "@codemirror/lang-css";
+import { javascript } from "@codemirror/lang-javascript";
+import { EditorView, lineNumbers } from "@codemirror/view";
+
 export interface IElement {
   _id: string;
   title: string;
@@ -13,33 +17,7 @@ export interface IElement {
   cssCode: string;
   reactCode?: string;
 }
-export function CodeBlock({ code }: { code: string }) {
-  return (
-    <SyntaxHighlighter
-      language="css"
-      style={vscDarkPlus}
-      showLineNumbers
-      wrapLines // giữ thẳng hàng số dòng
-      customStyle={{
-        padding: "16px",
-        borderRadius: "8px",
-        fontSize: "14px",
-        lineHeight: "1.6",
-        overflowX: "auto", // thanh cuộn ngang
-        whiteSpace: "pre", // giữ nguyên format VSCode
-      }}
-      lineNumberStyle={{
-        minWidth: "2.5em", // số dòng canh thẳng
-        paddingRight: "12px",
-        textAlign: "right",
-        opacity: 0.6,
-        userSelect: "none",
-      }}
-    >
-      {code}
-    </SyntaxHighlighter>
-  );
-}
+
 const ElementDetail = () => {
   const { id } = useParams();
   const [element, setElement] = useState<IElement | null>(null);
@@ -49,7 +27,6 @@ const ElementDetail = () => {
 
   useEffect(() => {
     if (!id) return;
-
     const fetchElementData = async () => {
       try {
         setLoading(true);
@@ -68,21 +45,14 @@ const ElementDetail = () => {
         setLoading(false);
       }
     };
-
     fetchElementData();
   }, [id]);
 
-  if (loading) {
+  if (loading)
     return <div className="detail-status">Đang tải component...</div>;
-  }
-
-  if (error) {
-    return <div className="detail-status error">{error}</div>;
-  }
-
-  if (!element) {
+  if (error) return <div className="detail-status error">{error}</div>;
+  if (!element)
     return <div className="detail-status">Không tìm thấy component.</div>;
-  }
 
   return (
     <div className="detail">
@@ -90,6 +60,7 @@ const ElementDetail = () => {
       <h1>{element.title}</h1>
 
       <div className="detail__row">
+        {/* Preview */}
         <div className="detail__preview">
           <iframe
             title={element.title}
@@ -100,7 +71,7 @@ const ElementDetail = () => {
           />
         </div>
 
-        {/* ✅ THAY ĐỔI Ở ĐÂY: Đổi tên class để rõ nghĩa hơn */}
+        {/* Code viewer */}
         <div className="detail__code-viewer">
           <div className="tabs">
             <div className="tabs__header">
@@ -121,38 +92,49 @@ const ElementDetail = () => {
                 CSS
               </button>
             </div>
+
             <div className="tabs__content">
               {activeTab === "html" && (
-                <SyntaxHighlighter
-                  language="html"
-                  style={oneDark}
-                  showLineNumbers
-                  wrapLines={true}
-                >
-                  {element.htmlCode ?? ""}
-                </SyntaxHighlighter>
+                <CodeMirror
+                  value={element.htmlCode ?? ""}
+                  height="500px"
+                  theme={vscodeDark}
+                  extensions={[html(), lineNumbers(), EditorView.lineWrapping]}
+                  editable={false}
+                  basicSetup={false}
+                />
               )}
               {activeTab === "css" && (
-                <SyntaxHighlighter
-                  language="css"
-                  style={oneDark}
-                  showLineNumbers
-                  wrapLines={true}
-                >
-                  {element.cssCode ?? ""}
-                </SyntaxHighlighter>
+                <CodeMirror
+                  value={element.cssCode ?? ""}
+                  height="500px"
+                  theme={vscodeDark}
+                  extensions={[css(), lineNumbers(), EditorView.lineWrapping]}
+                  editable={false}
+                  basicSetup={false}
+                />
               )}
             </div>
           </div>
         </div>
       </div>
 
+      {/* React code nếu có */}
       {element.reactCode && (
         <div className="detail__react-code">
           <h3>React Code</h3>
-          <SyntaxHighlighter language="jsx" style={oneDark} showLineNumbers>
-            {element.reactCode}
-          </SyntaxHighlighter>
+          <CodeMirror
+            value={element.reactCode ?? ""}
+            height="500px"
+            theme={vscodeDark}
+            extensions={[
+              javascript({ jsx: true }),
+              lineNumbers(),
+              EditorView.lineWrapping,
+            ]}
+            editable={false}
+            basicSetup={false}
+          />
           <button
             className="copy-button"
             onClick={() =>
