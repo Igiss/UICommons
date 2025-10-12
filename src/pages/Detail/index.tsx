@@ -32,17 +32,15 @@ const ElementDetail = () => {
         setLoading(true);
         setError(null);
 
-        const res = await fetch(
-          `http://localhost:3000/components/${encodeURIComponent(id)}`
-        );
+        const res = await fetch(`http://localhost:3000/components/${id}`);
         if (!res.ok) {
           throw new Error("Không tìm thấy component.");
         }
         const data = await res.json();
         const decodedData = {
           ...data,
-          htmlCode: decodeURIComponent(data.htmlCode || ""),
-          cssCode: decodeURIComponent(data.cssCode || ""),
+          htmlCode: data.htmlCode || "",
+          cssCode: data.cssCode || "",
         };
         setElement(decodedData);
       } catch (err) {
