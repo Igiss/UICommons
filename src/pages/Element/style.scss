@@ -40,33 +40,31 @@
   }
 
   .card {
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 15px;
+    border: 1px solid #2c2c2c;
+    border-radius: 12px;
+    padding: 18px;
     text-decoration: none;
-    color: black;
-    background: #fff;
-    transition: 0.2s;
+    background: #1a1a1a;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
 
-    &:hover {
-      transform: scale(1.03);
-      box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.15);
-    }
+  .card:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 18px rgba(123, 92, 255, 0.2);
+  }
 
-    .preview {
-      width: 100%;
-      height: 120px;
-      border: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    p {
-      margin-top: 10px;
-      font-weight: 600;
-      color: #333;
-    }
+  .preview {
+    width: 100%;
+    height: 370px;
+    border: none;
+    align-items: center;
+    align-content: center;
+    text-align: center;
+    display: flex;
   }
 
   .create-btn {

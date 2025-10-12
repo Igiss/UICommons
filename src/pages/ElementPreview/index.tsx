@@ -10,6 +10,15 @@ const ElementPreview = ({ htmlCode = "", cssCode }: ElementPreviewProps) => {
 
   useEffect(() => {
     if (containerRef.current) {
+      let decodedHTML = htmlCode;
+      let decodedCSS = cssCode;
+
+      try {
+        decodedHTML = decodeURIComponent(htmlCode || "");
+        decodedCSS = decodeURIComponent(cssCode || "");
+      } catch (err) {
+        console.warn("⚠️ Decode error:", err);
+      }
       let shadow = containerRef.current.shadowRoot;
       if (!shadow) {
         shadow = containerRef.current.attachShadow({ mode: "open" });
@@ -28,11 +37,11 @@ const ElementPreview = ({ htmlCode = "", cssCode }: ElementPreviewProps) => {
           width: 100%;
           height: 100%;
         }
-        ${cssCode || ""}
+        ${decodedCSS}
       `;
 
       const wrapper = document.createElement("div");
-      wrapper.innerHTML = htmlCode;
+      wrapper.innerHTML = decodedHTML;
 
       shadow.appendChild(style);
       shadow.appendChild(wrapper);

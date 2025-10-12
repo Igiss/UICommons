@@ -30,12 +30,12 @@ const LoginSuccess = () => {
   }, [searchParams]);
 
   // Giao diện tạm thời trong lúc xử lý
-  // return (
-  //   <div style={{ padding: "40px", textAlign: "center", color: "white" }}>
-  //     <h1>Login Successful!</h1>
-  //     <p>Please wait, we are redirecting you...</p>
-  //   </div>
-  // );
+  return (
+    <div style={{ padding: "40px", textAlign: "center", color: "white" }}>
+      <h1>Login Successful!</h1>
+      <p>Please wait, we are redirecting you...</p>
+    </div>
+  );
 };
 
 export default LoginSuccess;

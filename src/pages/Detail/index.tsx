@@ -32,12 +32,19 @@ const ElementDetail = () => {
         setLoading(true);
         setError(null);
 
-        const res = await fetch(`http://localhost:3000/components/${id}`);
+        const res = await fetch(
+          `http://localhost:3000/components/${encodeURIComponent(id)}`
+        );
         if (!res.ok) {
           throw new Error("Không tìm thấy component.");
         }
         const data = await res.json();
-        setElement(data);
+        const decodedData = {
+          ...data,
+          htmlCode: decodeURIComponent(data.htmlCode || ""),
+          cssCode: decodeURIComponent(data.cssCode || ""),
+        };
+        setElement(decodedData);
       } catch (err) {
         console.error("Lỗi khi tải dữ liệu component:", err);
         setError("Không thể tải được dữ liệu cho component này.");

@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import Navbar from "./pages/Navbar";
 import Elements from "./pages/Element";
 import LoginSuccess from "./pages/Login/LoginSuccess";
+import AddElement from "./pages/AddElement";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/elements" element={<Elements />} />
         <Route path="/element/:id" element={<ElementDetail />} />
         <Route path="/login/success" element={<LoginSuccess />} />
+        <Route path="/elements/new" element={<AddElement />} />
         {/* Route /preview đã được xóa bỏ vì nó là code cũ gây lỗi */}
         <Route path="*" element={<div>404 Not Found</div>} />
       </Routes>

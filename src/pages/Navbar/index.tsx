@@ -57,8 +57,10 @@ const Navbar = () => {
 
   const handleCreateClick = () => {
     if (isLoggedIn) {
-      alert("Chuyển đến trang tạo element mới!");
+      // Nếu đã đăng nhập, chuyển hướng đến trang tạo element
+      navigate("/elements/new", { state: { openTypePopup: true } });
     } else {
+      // Nếu chưa đăng nhập, hiển thị popup login
       setShowLoginPopup(true);
     }
   };
