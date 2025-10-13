@@ -7,7 +7,8 @@ import CodeMirror from "@uiw/react-codemirror";
 import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 import { html } from "@codemirror/lang-html";
 import { css } from "@codemirror/lang-css";
-import { javascript } from "@codemirror/lang-javascript";
+import ExportPopup from "../Detail/popupExport";
+
 import { EditorView, lineNumbers } from "@codemirror/view";
 
 export interface IElement {
@@ -16,6 +17,9 @@ export interface IElement {
   htmlCode: string;
   cssCode: string;
   reactCode?: string;
+  litCode?: string;
+  svelteCode?: string;
+  vueCode?: string;
 }
 
 const ElementDetail = () => {
@@ -24,6 +28,9 @@ const ElementDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<"html" | "css">("html");
+  const [showExportPopup, setShowExportPopup] = useState(false);
+  const [exportCode, setExportCode] = useState("");
+  const [selectedExport, setSelectedExport] = useState("react");
 
   useEffect(() => {
     if (!id) return;
@@ -70,7 +77,7 @@ const ElementDetail = () => {
           <iframe
             title={element.title}
             className="preview-iframe"
-            srcDoc={`<style>body {display: flex;justify-content: center;align-items: center;height: 100vh;margin: 0;}${
+            srcDoc={`<style>body {display: flex;justify-content: center;align-items: center;height: 100vh;margin: 0;overflow: hidden;}${
               element.cssCode ?? ""
             }</style>${element.htmlCode ?? ""}`}
           />
@@ -125,31 +132,65 @@ const ElementDetail = () => {
       </div>
 
       {/* React code nếu có */}
-      {element.reactCode && (
-        <div className="detail__react-code">
-          <h3>React Code</h3>
-          <CodeMirror
-            value={element.reactCode ?? ""}
-            height="500px"
-            theme={vscodeDark}
-            extensions={[
-              javascript({ jsx: true }),
-              lineNumbers(),
-              EditorView.lineWrapping,
-            ]}
-            editable={false}
-            basicSetup={false}
-          />
+      {/* 🔽 Action Bar (Save / Copy / Export) */}
+      <div className="detail__actions">
+        <button className="action-btn">
+          <span>⭐</span> Save to favorites
+        </button>
+
+        <button className="action-btn">
+          <img src="/figma-icon.svg" alt="Figma" width="16" height="16" />
+          Copy to Figma
+        </button>
+
+        <div className="export-group">
           <button
-            className="copy-button"
-            onClick={() =>
-              navigator.clipboard.writeText(element.reactCode ?? "")
-            }
+            className="action-btn"
+            onClick={() => {
+              let code = "";
+              switch (selectedExport) {
+                case "react":
+                  code = element.reactCode || "Không có React code.";
+                  break;
+                case "vue":
+                  code = element.vueCode || "Không có Vue code.";
+                  break;
+                case "svelte":
+                  code = element.svelteCode || "Không có Svelte code.";
+                  break;
+                case "lit":
+                  code = element.litCode || "Không có Lit code.";
+                  break;
+                default:
+                  code = "Vui lòng chọn loại export.";
+              }
+              setExportCode(code);
+              setShowExportPopup(true);
+            }}
           >
-            Copy React Code
+            ⚙️ Export
           </button>
+
+          <select
+            className="export-select"
+            value={selectedExport}
+            onChange={(e) => setSelectedExport(e.target.value)}
+          >
+            <option value="react">React</option>
+            <option value="vue">Vue</option>
+            <option value="svelte">Svelte</option>
+            <option value="d">Lit</option>
+          </select>
         </div>
-      )}
+
+        {/* Popup */}
+        <ExportPopup
+          visible={showExportPopup}
+          language={selectedExport}
+          code={exportCode}
+          onClose={() => setShowExportPopup(false)}
+        />
+      </div>
     </div>
   );
 };

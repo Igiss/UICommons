@@ -46,7 +46,7 @@ $border-color: #333;
   flex: 0.9; // Chiếm 1 nửa không gian
   border: 1px solid $border-color;
   border-radius: 8px;
-  overflow: hidden; // Đảm bảo iframe không tràn ra ngoài
+  overflow: hidden;
 
   .preview-iframe {
     width: 100%;
@@ -149,5 +149,83 @@ $border-color: #333;
         background-color: #444;
       }
     }
+  }
+}
+// --- THANH ACTION (Save / Copy / Export) ---
+.detail__actions {
+  display: flex;
+  justify-content: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 32px;
+  padding: 14px 22px;
+  background: #181818;
+  border: 1px solid $border-color;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+}
+
+.action-btn {
+  background: linear-gradient(145deg, #2a2a2a, #1e1e1e);
+  color: #f0f0f0;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-weight: 500;
+
+  &:hover {
+    background: #333;
+    border-color: #444;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(1px);
+    background: #222;
+  }
+
+  svg,
+  img {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.export-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #202020;
+  border-radius: 8px;
+  padding: 4px 8px;
+  border: 1px solid #333;
+}
+
+.export-select {
+  background: #2a2a2a;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover {
+    background: #333;
+  }
+
+  &:focus {
+    outline: none;
+    border: 1px solid $primary-color;
   }
 }
