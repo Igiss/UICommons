@@ -57,9 +57,15 @@ const Elements = () => {
         <select value={category} onChange={(e) => setCategory(e.target.value)}>
           <option value="all">All Categories</option>
           <option value="button">Button</option>
+          <option value="toggle switch">Toggle Switch</option>
+          <option value="checkbox">Checkbox</option>
           <option value="card">Card</option>
+          <option value="loader">Loader</option>
+          <option value="input">Input</option>
           <option value="form">Form</option>
-          <option value="nav">Navigation</option>
+          <option value="pattern">Pattern</option>
+          <option value="radio buttons">Radio Buttons</option>
+          <option value="tooltips">Tooltips</option>
         </select>
       </div>
 
