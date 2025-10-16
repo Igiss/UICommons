@@ -9,6 +9,7 @@ import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 import CodeMirror from "@uiw/react-codemirror";
 import { generateFrameworkCode } from "./codeGenerator";
 import { getTemplate } from "./templates";
+import { FiRefreshCw, FiSave, FiSend } from "react-icons/fi";
 
 // 🧩 Danh sách loại component cố định
 const CATEGORY_LIST = [
@@ -70,8 +71,14 @@ const AddElement = () => {
     setPreviewSrc(doc);
   }, [htmlCode, cssCode]);
 
+  const handleChangetype = () => {
+    setShowPopup(true);
+  };
   // 🧠 Gửi dữ liệu lên backend
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (
+    e: React.FormEvent,
+    status: "draft" | "public" = "public"
+  ) => {
     e.preventDefault();
     setIsSubmitting(true);
     setError(null);
@@ -83,6 +90,8 @@ const AddElement = () => {
       const litCode = generateFrameworkCode(htmlCode, cssCode, "lit");
 
       const token = localStorage.getItem("authToken");
+      const accountId = localStorage.getItem("accountId"); // 👈 lưu khi login
+
       if (!selectedCategory) throw new Error("Vui lòng chọn loại component!");
 
       const res = await fetch("http://localhost:3000/components", {
@@ -99,7 +108,9 @@ const AddElement = () => {
           vueCode,
           svelteCode,
           litCode,
-          category: selectedCategory, // ✅ chỉ gửi category string
+          category: selectedCategory,
+          status, // 👈 "draft" hoặc "public"
+          accountId,
         }),
       });
 
@@ -166,7 +177,7 @@ const AddElement = () => {
 
         {/* RIGHT: Code Editor */}
         <div className="detail__code-viewer">
-          <form onSubmit={handleSubmit}>
+          <form id="element-form" onSubmit={(e) => handleSubmit(e)}>
             <div className="form-group">
               <label>Tiêu đề</label>
               <input
@@ -227,16 +238,38 @@ const AddElement = () => {
             </div>
 
             {error && <div className="form-error">{error}</div>}
-
-            <button
-              type="submit"
-              className="submit-btn"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? "Đang lưu..." : "💾 Lưu Element"}
-            </button>
           </form>
         </div>
+      </div>
+      <div className="form-actions">
+        <button
+          type="button"
+          className="action-btn secondary"
+          onClick={handleChangetype}
+        >
+          <FiRefreshCw />
+          <span>Change type</span>
+        </button>
+
+        <button
+          type="button"
+          className="action-btn secondary"
+          disabled={isSubmitting}
+          onClick={(e) => handleSubmit(e, "draft")}
+        >
+          <FiSave />
+          <span>Save as a draft</span>
+        </button>
+
+        <button
+          type="submit"
+          form="element-form"
+          className="action-btn primary"
+          disabled={isSubmitting}
+        >
+          <FiSend />
+          <span>{isSubmitting ? "Submitting..." : "Submit for review"}</span>
+        </button>
       </div>
     </div>
   );

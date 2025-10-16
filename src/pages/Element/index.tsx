@@ -13,6 +13,7 @@ export interface IElement {
   svelteCode?: string;
   accountId: string; // ai tạo component này
   category?: string;
+  status?: "draft" | "public";
 }
 
 const Elements = () => {
@@ -25,7 +26,10 @@ const Elements = () => {
       try {
         const res = await fetch("http://localhost:3000/components");
         const data = await res.json();
-        setElements(data);
+        const publicElements = data.filter(
+          (el: IElement) => el.status === "public"
+        );
+        setElements(publicElements);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
