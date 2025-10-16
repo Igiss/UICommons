@@ -109,8 +109,8 @@ const ElementDetail = () => {
               {activeTab === "html" && (
                 <CodeMirror
                   value={element.htmlCode ?? ""}
-                  height="500px"
                   theme={vscodeDark}
+                  height="600px"
                   extensions={[html(), lineNumbers(), EditorView.lineWrapping]}
                   editable={false}
                   basicSetup={false}
@@ -119,7 +119,7 @@ const ElementDetail = () => {
               {activeTab === "css" && (
                 <CodeMirror
                   value={element.cssCode ?? ""}
-                  height="500px"
+                  height="600px"
                   theme={vscodeDark}
                   extensions={[css(), lineNumbers(), EditorView.lineWrapping]}
                   editable={false}
