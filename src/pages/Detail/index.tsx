@@ -1,14 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import "./style.scss";
-
-// CodeMirror
 import CodeMirror from "@uiw/react-codemirror";
 import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 import { html } from "@codemirror/lang-html";
 import { css } from "@codemirror/lang-css";
 import ExportPopup from "../Detail/popupExport";
-
 import { EditorView, lineNumbers } from "@codemirror/view";
 
 export interface IElement {
@@ -32,33 +29,68 @@ const ElementDetail = () => {
   const [exportCode, setExportCode] = useState("");
   const [selectedExport, setSelectedExport] = useState("react");
 
+  // 🟡 Thêm state quản lý yêu thích
+  const [isFavourite, setIsFavourite] = useState<boolean>(false);
+  const token = localStorage.getItem("authToken");
+  console.log("token:", token);
+  const accountId = localStorage.getItem("accountId");
   useEffect(() => {
     if (!id) return;
     const fetchElementData = async () => {
       try {
         setLoading(true);
-        setError(null);
-
         const res = await fetch(`http://localhost:3000/components/${id}`);
-        if (!res.ok) {
-          throw new Error("Không tìm thấy component.");
-        }
+        if (!res.ok) throw new Error("Không tìm thấy component.");
         const data = await res.json();
-        const decodedData = {
+        setElement({
           ...data,
           htmlCode: data.htmlCode || "",
           cssCode: data.cssCode || "",
-        };
-        setElement(decodedData);
+        });
+
+        // 🟢 Kiểm tra xem component này có trong favorites không
+        const favRes = await fetch(
+          `http://localhost:3000/favourites/check/${id}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
+        const favData = await favRes.json();
+        setIsFavourite(favData.isFavourite);
       } catch (err) {
-        console.error("Lỗi khi tải dữ liệu component:", err);
+        console.error("Lỗi khi tải component:", err);
         setError("Không thể tải được dữ liệu cho component này.");
       } finally {
         setLoading(false);
       }
     };
     fetchElementData();
-  }, [id]);
+  }, [id, token]);
+
+  // 🧩 Hàm toggle favourite
+  const handleToggleFavourite = async () => {
+    if (!id) return;
+    try {
+      const token = localStorage.getItem("authToken"); // tên key tùy bạn lưu khi login
+
+      const res = await fetch("http://localhost:3000/favourites/toggle", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // 🟢 Bắt buộc phải có
+        },
+        body: JSON.stringify({ componentId: id }), // accountId không cần gửi nữa
+      });
+
+      console.log("Sending favourite:", { accountId, componentId: id });
+
+      const data = await res.json();
+      setIsFavourite(data.isFavourite);
+    } catch (err) {
+      console.error("Lỗi khi toggle favourite:", err);
+    }
+  };
 
   if (loading)
     return <div className="detail-status">Đang tải component...</div>;
@@ -77,7 +109,7 @@ const ElementDetail = () => {
           <iframe
             title={element.title}
             className="preview-iframe"
-            srcDoc={`<style>body {display: flex;justify-content: center;align-items: center;height: 100vh;margin: 0;overflow: hidden;}${
+            srcDoc={`<style>body {display:flex;justify-content:center;align-items:center;height:100vh;margin:0;overflow:hidden;}${
               element.cssCode ?? ""
             }</style>${element.htmlCode ?? ""}`}
           />
@@ -131,18 +163,17 @@ const ElementDetail = () => {
         </div>
       </div>
 
-      {/* React code nếu có */}
-      {/* 🔽 Action Bar (Save / Copy / Export) */}
+      {/* 🧭 Action Bar */}
       <div className="detail__actions">
-        <button className="action-btn">
-          <span>⭐</span> Save to favorites
+        {/* ⭐ Save to favourites */}
+        <button className="action-btn" onClick={handleToggleFavourite}>
+          <span style={{ color: isFavourite ? "#FFD700" : "#888" }}>
+            {isFavourite ? "⭐" : "☆"}
+          </span>{" "}
+          {isFavourite ? "Đã lưu yêu thích" : "Lưu vào yêu thích"}
         </button>
 
-        <button className="action-btn">
-          <img src="/figma-icon.svg" alt="Figma" width="16" height="16" />
-          Copy to Figma
-        </button>
-
+        {/* Export */}
         <div className="export-group">
           <button
             className="action-btn"
@@ -179,11 +210,10 @@ const ElementDetail = () => {
             <option value="react">React</option>
             <option value="vue">Vue</option>
             <option value="svelte">Svelte</option>
-            <option value="d">Lit</option>
+            <option value="lit">Lit</option>
           </select>
         </div>
 
-        {/* Popup */}
         <ExportPopup
           visible={showExportPopup}
           language={selectedExport}
