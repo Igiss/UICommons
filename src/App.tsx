@@ -8,6 +8,7 @@ import Navbar from "./pages/Navbar";
 import Elements from "./pages/Element";
 import LoginSuccess from "./pages/Login/LoginSuccess";
 import AddElement from "./pages/AddElement";
+import ProfilePage from "./pages/Profile";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/profile" element={<ProfilePage />} />
         <Route path="/elements" element={<Elements />} />
         <Route path="/element/:id" element={<ElementDetail />} />
         <Route path="/login/success" element={<LoginSuccess />} />
