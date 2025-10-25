@@ -14,7 +14,7 @@ export interface IElement {
   litCode?: string;
   svelteCode?: string;
   accountId: string; // ai tạo component này
-  status?: "draft" | "public";
+  status?: "draft" | "public" | "review" | "rejected";
 }
 
 const Home = () => {

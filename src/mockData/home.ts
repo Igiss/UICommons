@@ -1,4 +1,4 @@
-export const elementsMock = [
+export const elementsMock: = [
   {
     id: 1,
     title: "Fancy Button",
@@ -43,7 +43,7 @@ export const elementsMock = [
     .button::before {
       content: "";
       position: absolute;
-      inset: 0;ư
+      inset: 0;
       border-radius: 0.5rem;
       background: linear-gradient(
           180deg,
