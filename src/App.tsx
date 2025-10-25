@@ -9,6 +9,7 @@ import Elements from "./pages/Element";
 import LoginSuccess from "./pages/Login/LoginSuccess";
 import AddElement from "./pages/AddElement";
 import ProfilePage from "./pages/Profile";
+import FavouritePage from "./pages/Favourite";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/favourite" element={<FavouritePage />} />
         <Route path="/elements" element={<Elements />} />
         <Route path="/element/:id" element={<ElementDetail />} />
         <Route path="/login/success" element={<LoginSuccess />} />

@@ -66,6 +66,21 @@ const ElementDetail = () => {
       }
     };
     fetchElementData();
+    const recordView = async () => {
+      try {
+        await fetch(`http://localhost:3000/views/record/${id}`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log("✅ Ghi lại lượt xem thành công!");
+      } catch (error) {
+        console.error("❌ Ghi lượt xem thất bại:", error);
+      }
+    };
+
+    recordView();
   }, [id, token]);
 
   // 🧩 Hàm toggle favourite

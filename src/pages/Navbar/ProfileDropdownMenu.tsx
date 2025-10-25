@@ -18,7 +18,7 @@ const ProfileDropdownMenu: React.FC<ProfileDropdownMenuProps> = ({
           <Link to="/profile">Your Profile</Link>
         </li>
         <li>
-          <Link to="/favorites">Your Favorites</Link>
+          <Link to="/favourite">Your Favorites</Link>
         </li>
         <li>
           <Link to="/settings">Settings</Link>
