@@ -1,13 +1,15 @@
 // File: src/pages/Detail/style.scss (Phiên bản đã sửa lỗi và tối ưu)
 
 // --- BIẾN VÀ THIẾT LẬP CHUNG ---
+// Variables
 $primary-color: #61dafb;
 $background-color: #121212;
 $surface-color: #1e1e1e;
 $text-color: #e0e0e0;
 $border-color: #333;
+$hover-color: #2a2a2a;
 
-// --- CONTAINER CHÍNH ---
+// Main container
 .detail {
   max-width: 1400px;
   margin: 2rem auto;
@@ -26,24 +28,82 @@ $border-color: #333;
       text-decoration: underline;
     }
   }
+}
+
+// Header with poster info
+.detail__header {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid $border-color;
 
   h1 {
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
+    font-size: 2rem;
   }
 }
 
-// --- BỐ CỤC CHÍNH (2 CỘT) ---
-// Sử dụng Flexbox để chia layout thành 2 cột: Preview và Code Viewer
-.detail__row {
+.detail__meta {
   display: flex;
-  gap: 2rem; // Khoảng cách giữa 2 cột
-  align-items: stretch; // Quan trọng: làm cho 2 cột có chiều cao bằng nhau
-  min-height: 600px; // Chiều cao tối thiểu cho layout
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
-// --- CỘT BÊN TRÁI: PREVIEW ---
+.detail__author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  &-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  &-name {
+    display: block;
+    font-weight: 600;
+    color: $text-color;
+  }
+}
+
+.detail__date {
+  display: block;
+  font-size: 0.85rem;
+  color: #999;
+}
+
+.detail__stats {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+
+  .stat {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.9rem;
+    color: #999;
+
+    svg {
+      opacity: 0.7;
+    }
+  }
+}
+
+// Layout
+.detail__row {
+  display: flex;
+  gap: 2rem;
+  align-items: stretch;
+  min-height: 600px;
+  margin-bottom: 2rem;
+}
+
 .detail__preview {
-  flex: 0.9; // Chiếm 1 nửa không gian
+  flex: 0.9;
   border: 1px solid $border-color;
   border-radius: 8px;
   overflow: hidden;
@@ -55,19 +115,18 @@ $border-color: #333;
   }
 }
 
-// --- CỘT BÊN PHẢI: CODE VIEWER ---
 .detail__code-viewer {
-  flex: 1.1; // Chiếm 1 nửa không gian còn lại
-  display: flex; // Sử dụng flexbox để các thành phần bên trong (tabs) co giãn
-  flex-direction: column; // Sắp xếp theo chiều dọc
-  min-width: 0; // Fix lỗi flexbox overflow
+  flex: 1.1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
 }
 
-// --- KHU VỰC TABS (HTML/CSS) ---
+// Tabs
 .tabs {
   display: flex;
   flex-direction: column;
-  height: 100%; // Quan trọng: làm cho tabs chiếm toàn bộ chiều cao của cột cha
+  height: 100%;
 
   &__header {
     display: flex;
@@ -96,76 +155,37 @@ $border-color: #333;
     }
   }
 
-  // Quan trọng: Làm cho khu vực chứa code chiếm hết không gian còn lại
   .tabs__content {
     border-radius: 8px;
     background-color: $surface-color;
-    overflow: hidden; // Giúp bo góc hoạt động đúng
+    overflow: hidden;
+    flex: 1;
 
-    pre {
-      height: 500px;
-      margin: 0 !important;
-
-      // Thư viện dùng table để tạo số dòng, chúng ta style nó
-      // Đoạn code này sẽ tạo ra padding để các dòng xuống hàng được thụt lề
-      code {
-        // Quan trọng: Áp dụng các quy tắc xuống dòng ở đây
-        white-space: pre-wrap !important;
-        overflow-wrap: break-word !important;
-        font-family: "Fira Code", Consolas, Monaco, monospace !important;
-      }
+    .cm-gutters {
+      background: #1e1e1e !important;
+      color: #999 !important;
+      border-right: 1px solid #333 !important;
     }
-  }
-  .cm-gutters {
-    background: #1e1e1e !important;
-    color: #999 !important;
-    border-right: 1px solid #333 !important;
-  }
 
-  .cm-lineNumbers {
-    min-width: 3em; /* giữ số dòng thẳng hàng */
-    text-align: right;
-  }
-
-  // --- KHU VỰC REACT CODE (NẾU CÓ) ---
-  .detail__react-code {
-    margin-top: 2rem;
-    h3 {
-      margin-bottom: 1rem;
-    }
-    .copy-button {
-      margin-top: 1rem;
-      padding: 0.6rem 1.2rem;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: #dcdcdc;
-      background-color: #333;
-      border: 1px solid #444;
-      cursor: pointer;
-      transition: background-color 0.2s;
-
-      &:hover {
-        background-color: #444;
-      }
+    .cm-lineNumbers {
+      min-width: 3em;
+      text-align: right;
     }
   }
 }
-// --- THANH ACTION (Save / Copy / Export) ---
+
+// Action bar
 .detail__actions {
   display: flex;
-  justify-content: flex;
+  justify-content: flex-start;
   align-items: center;
   gap: 12px;
-  margin-top: 32px;
+  margin-bottom: 3rem;
   padding: 14px 22px;
   background: #181818;
   border: 1px solid $border-color;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-
-  bottom: 0;
-  z-index: 10;
 }
 
 .action-btn {
@@ -191,12 +211,6 @@ $border-color: #333;
   &:active {
     transform: translateY(1px);
     background: #222;
-  }
-
-  svg,
-  img {
-    width: 16px;
-    height: 16px;
   }
 }
 
@@ -227,5 +241,299 @@ $border-color: #333;
   &:focus {
     outline: none;
     border: 1px solid $primary-color;
+  }
+}
+
+// Comments section
+.detail__comments {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 2px solid $border-color;
+
+  h2 {
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+  }
+}
+
+.comment-form {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: $surface-color;
+  border-radius: 8px;
+
+  &__avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  &__input-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &__textarea {
+    min-height: 80px;
+    padding: 12px;
+    background: $background-color;
+    border: 1px solid $border-color;
+    border-radius: 6px;
+    color: $text-color;
+    font-family: inherit;
+    font-size: 0.95rem;
+    resize: vertical;
+
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+    }
+  }
+
+  &__submit {
+    align-self: flex-end;
+    padding: 8px 20px;
+    background: $primary-color;
+    color: $background-color;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+
+    &:hover:not(:disabled) {
+      opacity: 0.9;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.comment-login-prompt {
+  padding: 2rem;
+  text-align: center;
+  background: $surface-color;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  color: #999;
+}
+
+.comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.comment {
+  display: flex;
+  gap: 12px;
+  padding: 1rem;
+  background: $surface-color;
+  border-radius: 8px;
+  transition: background 0.2s;
+
+  &:hover {
+    background: $hover-color;
+  }
+
+  &--reply {
+    margin-left: 52px;
+    background: #191919;
+  }
+
+  &__avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  &__content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  &__author {
+    font-weight: 600;
+    color: $text-color;
+  }
+
+  &__date {
+    font-size: 0.85rem;
+    color: #999;
+  }
+
+  &__text {
+    margin: 0 0 10px 0;
+    color: $text-color;
+    line-height: 1.5;
+    word-wrap: break-word;
+  }
+
+  &__reply-btn {
+    background: transparent;
+    border: none;
+    color: $primary-color;
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding: 4px 0;
+    font-weight: 500;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__reply-form {
+    margin-top: 12px;
+    padding: 12px;
+    background: $background-color;
+    border-radius: 6px;
+  }
+
+  &__textarea {
+    width: 98%;
+    min-height: 60px;
+    padding: 10px;
+    background: $surface-color;
+    border: 1px solid $border-color;
+    border-radius: 6px;
+    color: $text-color;
+    font-family: inherit;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    resize: vertical;
+
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+    }
+  }
+
+  &__reply-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+
+  &__replies {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: 6px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background: $primary-color;
+  color: $background-color;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+.btn-secondary {
+  background: transparent;
+  color: #999;
+  border: 1px solid $border-color;
+
+  &:hover {
+    background: $hover-color;
+  }
+}
+
+.no-comments {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #999;
+  font-style: italic;
+}
+
+// Loading and error states
+.detail-status {
+  max-width: 1400px;
+  margin: 4rem auto;
+  padding: 3rem;
+  text-align: center;
+  background: $surface-color;
+  border-radius: 12px;
+  color: $text-color;
+  font-size: 1.1rem;
+
+  &.error {
+    color: #ff6b6b;
+  }
+}
+
+// Responsive design
+@media (max-width: 1024px) {
+  .detail__row {
+    flex-direction: column;
+  }
+
+  .detail__preview,
+  .detail__code-viewer {
+    flex: 1;
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .detail {
+    padding: 1rem;
+  }
+
+  .detail__header h1 {
+    font-size: 1.5rem;
+  }
+
+  .detail__meta {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .detail__actions {
+    flex-wrap: wrap;
+  }
+
+  .comment--reply {
+    margin-left: 20px;
+  }
+
+  .comment-form {
+    flex-direction: column;
+  }
+
+  .comment-form__avatar {
+    align-self: flex-start;
   }
 }
