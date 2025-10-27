@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import "./style.scss";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import 'react-tabs/style/react-tabs.css';
-import axios from 'axios';
-import ElementPreview from "../ElementPreview";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import "react-tabs/style/react-tabs.css";
+import axios from "axios";
+import ElementPreview from "../../components/ElementPreview";
 
 interface IUserPost {
   _id: string;
@@ -13,13 +13,13 @@ interface IUserPost {
   htmlCode: string;
   cssCode: string;
   createdAt?: string;
-  status: "draft" | "public" | "rejected" | "review"; 
+  status: "draft" | "public" | "rejected" | "review";
   parentId?: string;
 }
 
 interface IUserProfile {
   email: string;
-  userName: string; 
+  userName: string;
   avatar: string;
   favourites: number;
   posts: IUserPost[];
@@ -33,20 +33,22 @@ const ProfilePage = () => {
   const [error, setError] = useState<string | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
-  
+
   const [posts, setPosts] = useState<{ [key: string]: IUserPost[] }>({});
-  const [loadingTabs, setLoadingTabs] = useState<{ [key: string]: boolean }>({});
+  const [loadingTabs, setLoadingTabs] = useState<{ [key: string]: boolean }>(
+    {}
+  );
 
   const handleCreateClick = () => {
     navigate("/elements/new", { state: { openTypePopup: true } });
   };
-  
+
   // Handle token from URL
   useEffect(() => {
-    const queryToken = new URLSearchParams(location.search).get('token');
+    const queryToken = new URLSearchParams(location.search).get("token");
     if (queryToken) {
-      localStorage.setItem('authToken', queryToken);
-      window.history.replaceState({}, '', '/profile');
+      localStorage.setItem("authToken", queryToken);
+      window.history.replaceState({}, "", "/profile");
     }
   }, [location]);
 
@@ -65,20 +67,33 @@ const ProfilePage = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = res.data;
-        const usernameValue = data.userName || data.username || (data.email ? data.email.split("@")[0] : "user");
+        const usernameValue =
+          data.userName ||
+          data.username ||
+          (data.email ? data.email.split("@")[0] : "user");
 
         const newUserObject: IUserProfile = {
           email: data.email || "",
           userName: usernameValue,
-          avatar: data.avatar || `https://ui-avatars.com/api/?name=${usernameValue}`,
+          avatar:
+            data.avatar || `https://ui-avatars.com/api/?name=${usernameValue}`,
           favourites: data.favourites?.length || 0,
           posts: data.posts || [],
         };
 
         setUser(newUserObject);
-      } catch (err: any) {
-        console.error("Fetch profile failed", err);
-        setError(err.response?.status === 401 ? "Session expired. Please log in again." : "Failed to load profile.");
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+          console.error("Fetch profile failed", error);
+          setError(
+            error.response?.status === 401
+              ? "Session expired. Please log in again."
+              : "Failed to load profile."
+          );
+        } else {
+          console.error("Unexpected error:", error);
+          setError("An unknown error occurred.");
+        }
       } finally {
         setLoading(false);
       }
@@ -90,18 +105,17 @@ const ProfilePage = () => {
   // Fetch posts for all tabs
   useEffect(() => {
     if (user) {
-      // Map display tab names to backend tab values (matching component.service.ts)
       const tabMap: { [key: string]: string } = {
-        "Posts": "post",           // Maps to status='public' with no parentId
-        "Variations": "variations", // Maps to status='public' with parentId
-        "In Review": "review",      // Maps to status='review'
-        "Rejected": "rejected",     // Maps to status='rejected'
-        "Drafts": "draft",          // Maps to status='draft'
+        Posts: "post",
+        Variations: "variations",
+        "In Review": "review",
+        Rejected: "rejected",
+        Drafts: "draft",
       };
 
       Object.keys(tabMap).forEach((displayTab) => {
         const backendTab = tabMap[displayTab];
-        setLoadingTabs(prev => ({ ...prev, [displayTab]: true }));
+        setLoadingTabs((prev) => ({ ...prev, [displayTab]: true }));
         fetchTabPosts(backendTab, displayTab);
       });
     }
@@ -110,32 +124,39 @@ const ProfilePage = () => {
   const fetchTabPosts = async (backendTab: string, displayTab: string) => {
     const token = localStorage.getItem("authToken");
     if (!token) {
-      setLoadingTabs(prev => ({ ...prev, [displayTab]: false }));
+      setLoadingTabs((prev) => ({ ...prev, [displayTab]: false }));
       return;
     }
 
     try {
-      const res = await axios.get(`${API_URL}/components/user/${backendTab}`, { 
+      const res = await axios.get(`${API_URL}/components/user/${backendTab}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       console.log(`✅ Fetched ${displayTab} (${backendTab}):`, res.data);
       setPosts((prev) => ({ ...prev, [displayTab]: res.data || [] }));
-    } catch (err: any) {
-      console.error(`❌ Error fetching ${backendTab}:`, err.response?.data || err.message);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        console.error(
+          `❌ Error fetching ${backendTab}:`,
+          error.response?.data || error.message
+        );
+      } else {
+        console.error(`❌ Error fetching ${backendTab}:`, error);
+      }
       setPosts((prev) => ({ ...prev, [displayTab]: [] }));
     } finally {
-      setLoadingTabs(prev => ({ ...prev, [displayTab]: false }));
+      setLoadingTabs((prev) => ({ ...prev, [displayTab]: false }));
     }
   };
-  
+
   const getPostsForTab = (tab: string): IUserPost[] => {
     return posts[tab] || [];
   };
 
   const renderTabContent = (
-    tab: string, 
-    emptyMessage: string, 
-    showCreate: boolean = false, 
+    tab: string,
+    emptyMessage: string,
+    showCreate: boolean = false,
     emptyIcon: string = "▢"
   ) => {
     const isLoading = loadingTabs[tab];
@@ -181,19 +202,19 @@ const ProfilePage = () => {
     }
   };
 
-  // Loading state
   if (loading) {
     return <div className="profile-loading">Loading profile...</div>;
   }
 
-  // Error state
   if (error || !user) {
     return (
       <div className="profile-error">
         {error || "User not found"}
         <p>Please log in:</p>
-        <a href={`${API_URL}/auth/google`}>Login with Google</a><br />
-        <a href={`${API_URL}/auth/github`}>Login with GitHub</a><br />
+        <a href={`${API_URL}/auth/google`}>Login with Google</a>
+        <br />
+        <a href={`${API_URL}/auth/github`}>Login with GitHub</a>
+        <br />
         <a href={`${API_URL}/auth/discord`}>Login with Discord</a>
       </div>
     );
@@ -234,10 +255,20 @@ const ProfilePage = () => {
             {renderTabContent("Variations", "No variations yet", true, "♻")}
           </TabPanel>
           <TabPanel>
-            {renderTabContent("In Review", "No submissions in review", false, "⏳")}
+            {renderTabContent(
+              "In Review",
+              "No submissions in review",
+              false,
+              "⏳"
+            )}
           </TabPanel>
           <TabPanel>
-            {renderTabContent("Rejected", "No rejected submissions", false, "✗")}
+            {renderTabContent(
+              "Rejected",
+              "No rejected submissions",
+              false,
+              "✗"
+            )}
           </TabPanel>
           <TabPanel>
             {renderTabContent("Drafts", "No drafts yet", true, "📝")}

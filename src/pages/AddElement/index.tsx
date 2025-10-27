@@ -7,8 +7,8 @@ import { html } from "@codemirror/lang-html";
 import { EditorView, lineNumbers } from "@codemirror/view";
 import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 import CodeMirror from "@uiw/react-codemirror";
-import { generateFrameworkCode } from "./codeGenerator";
-import { getTemplate } from "./templates";
+import { generateFrameworkCode } from "../../utils/codeGenerator";
+import { getTemplate } from "../../utils/templates";
 import { FiRefreshCw, FiSave, FiSend } from "react-icons/fi";
 
 // 🧩 Danh sách loại component cố định

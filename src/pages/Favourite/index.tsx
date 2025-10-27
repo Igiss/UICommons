@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./style.scss";
-import ElementPreview from "../ElementPreview";
+import ElementPreview from "../../components/ElementPreview";
 
 interface IAuthor {
   username: string;

@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import ElementDetail from "./pages/Detail";
 import Home from "./pages/Home";
-import Navbar from "./pages/Navbar";
+import Navbar from "./components/Navbar";
 import Elements from "./pages/Element";
 import LoginSuccess from "./pages/Login/LoginSuccess";
 import AddElement from "./pages/AddElement";

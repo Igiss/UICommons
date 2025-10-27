@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../Navbar/style.scss";
-import LoginModal from "../Login";
+import LoginModal from "../../pages/Login";
 import ProfileDropdownMenu from "./ProfileDropdownMenu"; // 👈 import menu
 
 interface UserProfile {

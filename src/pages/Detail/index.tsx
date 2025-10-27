@@ -21,7 +21,7 @@ interface IComment {
   _id: string;
   content: string;
   createdAt: string;
-  accountId: any;
+  accountId: string | IAccount;
   componentId: string;
   parentId?: string | null;
   account?: IAccount;
@@ -38,7 +38,7 @@ interface IElement {
   svelteCode?: string;
   vueCode?: string;
   createdAt: string;
-  accountId: any;
+  accountId: string | IAccount;
   account?: IAccount;
 }
 
@@ -55,7 +55,7 @@ const ElementDetail = () => {
   const [isFavourite, setIsFavourite] = useState<boolean>(false);
   const [favouritesCount, setFavouritesCount] = useState<number>(0);
   const [viewsCount, setViewsCount] = useState<number>(0);
-  
+
   const [comments, setComments] = useState<IComment[]>([]);
   const [newComment, setNewComment] = useState("");
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
@@ -98,13 +98,14 @@ const ElementDetail = () => {
           ...res.data,
           htmlCode: res.data.htmlCode || "",
           cssCode: res.data.cssCode || "",
-          account: res.data.accountId && typeof res.data.accountId === 'object'
-            ? {
-              _id: res.data.accountId._id,
-              userName: res.data.accountId.userName,
-              avatar: res.data.accountId.avatar
-            }
-              : undefined
+          account:
+            res.data.accountId && typeof res.data.accountId === "object"
+              ? {
+                  _id: res.data.accountId._id,
+                  userName: res.data.accountId.userName,
+                  avatar: res.data.accountId.avatar,
+                }
+              : undefined,
         };
 
         setElement(elementData);
@@ -113,30 +114,39 @@ const ElementDetail = () => {
         setFavouritesCount(res.data.favouritesCount || 0);
 
         console.log("Views count from with-stats:", res.data.viewsCount);
-        console.log("Favourites count from with-stats:", res.data.favouritesCount);
+        console.log(
+          "Favourites count from with-stats:",
+          res.data.favouritesCount
+        );
 
         // Record view
         try {
-          await axios.post(`${API_URL}/views/${id}`, {}, {
-            headers: token ? { Authorization: `Bearer ${token}` } : {},
-          });
+          await axios.post(
+            `${API_URL}/views/${id}`,
+            {},
+            {
+              headers: token ? { Authorization: `Bearer ${token}` } : {},
+            }
+          );
           console.log("View recorded");
-        } catch (err) {
+        } catch {
           console.log("View tracking not available");
         }
 
         // Check favourite status
         if (token) {
           try {
-            const favRes = await axios.get(`${API_URL}/favourites/check/${id}`, {
-              headers: { Authorization: `Bearer ${token}` },
-            });
+            const favRes = await axios.get(
+              `${API_URL}/favourites/check/${id}`,
+              {
+                headers: { Authorization: `Bearer ${token}` },
+              }
+            );
             setIsFavourite(favRes.data.isFavourite);
           } catch (err) {
             console.error("Error checking favourite:", err);
           }
         }
-
       } catch (err) {
         console.error("Error loading component:", err);
         setError("Unable to load component data.");
@@ -152,21 +162,25 @@ const ElementDetail = () => {
     if (!id) return;
     const fetchComments = async () => {
       try {
-        const res = await axios.get(`${API_URL}/comments?componentId=${id}`);
+        const res = await axios.get<IComment[]>( // 👈 Gợi ý: Thêm type cho response
+          `${API_URL}/comments?componentId=${id}`
+        );
         const commentsData = res.data;
-        
-        const mappedComments = commentsData.map((comment: any) => ({
+
+        const mappedComments = commentsData.map((comment: IComment) => ({
+          // 👈 ĐÃ SỬA: 'any' thành 'IComment'
           ...comment,
-          account: comment.accountId && typeof comment.accountId === 'object' 
-            ? { 
-                _id: comment.accountId._id,
-                userName: comment.accountId.userName,
-                avatar: comment.accountId.avatar 
-              }
-            : undefined
+          account:
+            comment.accountId && typeof comment.accountId === "object"
+              ? {
+                  _id: comment.accountId._id,
+                  userName: comment.accountId.userName,
+                  avatar: comment.accountId.avatar,
+                }
+              : undefined,
         }));
-        
-        // xep comment thanh tree structure 
+
+        // xep comment thanh tree structure
         const organized = organizeComments(mappedComments);
         setComments(organized);
         console.log("Comments loaded:", organized.length);
@@ -181,11 +195,11 @@ const ElementDetail = () => {
     const commentMap = new Map<string, IComment>();
     const rootComments: IComment[] = [];
 
-    commentsData.forEach(comment => {
+    commentsData.forEach((comment) => {
       commentMap.set(comment._id, { ...comment, replies: [] });
     });
 
-    commentsData.forEach(comment => {
+    commentsData.forEach((comment) => {
       const commentWithReplies = commentMap.get(comment._id)!;
       if (comment.parentId) {
         const parent = commentMap.get(comment.parentId);
@@ -205,29 +219,34 @@ const ElementDetail = () => {
       alert("Đăng nhập để lưu");
       return;
     }
-    
+
     try {
       const res = await axios.post(
         `${API_URL}/favourites/toggle`,
         { componentId: id },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      
+
       const newIsFavourite = res.data.isFavourite;
       setIsFavourite(newIsFavourite);
-      
+
       try {
         const countRes = await axios.get(`${API_URL}/favourites/count/${id}`);
         setFavouritesCount(countRes.data.count || 0);
         console.log("Favourites count updated:", countRes.data.count);
-      } catch (err) {
+      } catch {
         console.log("Failed to fetch updated count");
       }
 
       console.log("Favourite toggled:", newIsFavourite);
-    } catch (err: any) {
+    } catch (err) {
       console.error("Error toggling favourite:", err);
-      alert(err.response?.data?.message || "Failed to toggle favourite");
+
+      if (axios.isAxiosError(err)) {
+        alert(err.response?.data?.message || "Failed to toggle favourite");
+      } else {
+        alert("An unknown error occurred while toggling favourite.");
+      }
     }
   };
 
@@ -236,15 +255,15 @@ const ElementDetail = () => {
       alert("Làm ơn hãy viết 1 bình luận");
       return;
     }
-    
+
     if (!token || !id) {
       alert("Làm ơn hãy đăng nhập để bình luận");
       return;
     }
-    
+
     try {
       console.log("Posting comment:", { content: newComment, componentId: id });
-      
+
       const res = await axios.post(
         `${API_URL}/comments`,
         {
@@ -253,26 +272,36 @@ const ElementDetail = () => {
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      
+
       console.log("✅ Comment posted:", res.data);
-      
+
       const newCommentData: IComment = {
         ...res.data,
-        account: res.data.accountId && typeof res.data.accountId === 'object'
-          ? {
-              _id: res.data.accountId._id,
-              userName: res.data.accountId.userName,
-              avatar: res.data.accountId.avatar
-            }
-          : currentUser || undefined,
-        replies: []
+        account:
+          res.data.accountId && typeof res.data.accountId === "object"
+            ? {
+                _id: res.data.accountId._id,
+                userName: res.data.accountId.userName,
+                avatar: res.data.accountId.avatar,
+              }
+            : currentUser || undefined,
+        replies: [],
       };
-      
-      setComments(prev => [newCommentData, ...prev]);
+
+      setComments((prev) => [newCommentData, ...prev]);
       setNewComment("");
-    } catch (err: any) {
-      console.error("Error posting comment:", err.response?.data || err);
-      alert(err.response?.data?.message || "Failed to post comment");
+    } catch (err) {
+      // 👈 ĐÃ SỬA: Bỏ ': any'
+      if (axios.isAxiosError(err)) {
+        console.error(
+          "Error posting comment:",
+          err.response?.data || err.message
+        );
+        alert(err.response?.data?.message || "Failed to post comment");
+      } else {
+        console.error("Error posting comment:", err);
+        alert("An unknown error occurred.");
+      }
     }
   };
 
@@ -281,15 +310,19 @@ const ElementDetail = () => {
       alert("Làm ơn hay nhập 1 bình luận");
       return;
     }
-    
+
     if (!token || !id) {
       alert("Làm ơn hãy đăng nhập để bình luận");
       return;
     }
-    
+
     try {
-      console.log("Posting reply:", { content: replyContent, componentId: id, parentId });
-      
+      console.log("Posting reply:", {
+        content: replyContent,
+        componentId: id,
+        parentId,
+      });
+
       const res = await axios.post(
         `${API_URL}/comments`,
         {
@@ -299,27 +332,40 @@ const ElementDetail = () => {
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      
+
       console.log("Reply posted:", res.data);
-      
+
       // Refresh comments
-      const commentsRes = await axios.get(`${API_URL}/comments?componentId=${id}`);
-      const mappedComments = commentsRes.data.map((comment: any) => ({
+      const commentsRes = await axios.get<IComment[]>( // 👈 Gợi ý: Thêm type cho response
+        `${API_URL}/comments?componentId=${id}`
+      );
+      const mappedComments = commentsRes.data.map((comment: IComment) => ({
+        // 👈 ĐÃ SỬA: 'any' thành 'IComment'
         ...comment,
-        account: comment.accountId && typeof comment.accountId === 'object' 
-          ? { 
-              _id: comment.accountId._id,
-              userName: comment.accountId.userName,
-              avatar: comment.accountId.avatar 
-            }
-          : undefined
+        account:
+          comment.accountId && typeof comment.accountId === "object"
+            ? {
+                _id: comment.accountId._id,
+                userName: comment.accountId.userName,
+                avatar: comment.accountId.avatar,
+              }
+            : undefined,
       }));
       setComments(organizeComments(mappedComments));
       setReplyContent("");
       setReplyingTo(null);
-    } catch (err: any) {
-      console.error("Error posting reply:", err.response?.data || err);
-      alert(err.response?.data?.message || "Failed to post reply");
+    } catch (err) {
+      // 👈 ĐÃ SỬA: Bỏ ': any'
+      if (axios.isAxiosError(err)) {
+        console.error(
+          "Error posting reply:",
+          err.response?.data || err.message
+        );
+        alert(err.response?.data?.message || "Failed to post reply");
+      } else {
+        console.error("Error posting reply:", err);
+        alert("An unknown error occurred.");
+      }
     }
   };
 
@@ -327,20 +373,30 @@ const ElementDetail = () => {
     const date = new Date(dateString);
     const now = new Date();
     const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
-    
+
     if (diffInSeconds < 60) return "just now";
     if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
-    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
-    if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)}d ago`;
-    
+    if (diffInSeconds < 86400)
+      return `${Math.floor(diffInSeconds / 3600)}h ago`;
+    if (diffInSeconds < 604800)
+      return `${Math.floor(diffInSeconds / 86400)}d ago`;
+
     return date.toLocaleDateString();
   };
 
   const renderComment = (comment: IComment, isReply = false) => (
-    <div key={comment._id} className={`comment ${isReply ? "comment--reply" : ""}`}>
-      <img 
-        src={comment.account?.avatar || `https://ui-avatars.com/api/?name=${comment.account?.userName || 'User'}`} 
-        alt="avatar" 
+    <div
+      key={comment._id}
+      className={`comment ${isReply ? "comment--reply" : ""}`}
+    >
+      <img
+        src={
+          comment.account?.avatar ||
+          `https://ui-avatars.com/api/?name=${
+            comment.account?.userName || "User"
+          }`
+        }
+        alt="avatar"
         className="comment__avatar"
       />
       <div className="comment__content">
@@ -352,14 +408,14 @@ const ElementDetail = () => {
         </div>
         <p className="comment__text">{comment.content}</p>
         {!isReply && token && (
-          <button 
+          <button
             className="comment__reply-btn"
             onClick={() => setReplyingTo(comment._id)}
           >
             Reply
           </button>
         )}
-        
+
         {replyingTo === comment._id && (
           <div className="comment__reply-form">
             <textarea
@@ -369,19 +425,25 @@ const ElementDetail = () => {
               className="comment__textarea"
             />
             <div className="comment__reply-actions">
-              <button onClick={() => handlePostReply(comment._id)} className="btn-primary">
+              <button
+                onClick={() => handlePostReply(comment._id)}
+                className="btn-primary"
+              >
                 Post Reply
               </button>
-              <button onClick={() => setReplyingTo(null)} className="btn-secondary">
+              <button
+                onClick={() => setReplyingTo(null)}
+                className="btn-secondary"
+              >
                 Cancel
               </button>
             </div>
           </div>
         )}
-        
+
         {comment.replies && comment.replies.length > 0 && (
           <div className="comment__replies">
-            {comment.replies.map(reply => renderComment(reply, true))}
+            {comment.replies.map((reply) => renderComment(reply, true))}
           </div>
         )}
       </div>
@@ -390,50 +452,52 @@ const ElementDetail = () => {
 
   if (loading) return <div className="detail-status">Loading component...</div>;
   if (error) return <div className="detail-status error">{error}</div>;
-  if (!element) return <div className="detail-status">Component not found.</div>;
+  if (!element)
+    return <div className="detail-status">Component not found.</div>;
 
   return (
     <div className="detail">
-      <Link to="/elements">← Quay lại</Link>
-      
       {/* poster info */}
-      <div className="detail__header">
-        <div className="detail__title-section">
-          <h1>{element.title}</h1>
-          <div className="detail__meta">
-            <div className="detail__author">
-              <img 
-                src={element.account?.avatar || `https://ui-avatars.com/api/?name=${element.account?.userName || 'User'}`}
+      <header className="detail-header">
+        <Link to="/elements" className="back-btn">
+          ← Go back
+        </Link>
+
+        <div className="stats">
+          <div className="info">
+            <span className="title">
+              {element.title} <span className="by">by</span>
+            </span>
+            <div className="author">
+              <img
+                src={
+                  element.account?.avatar ||
+                  `https://ui-avatars.com/api/?name=${
+                    element.account?.userName || "User"
+                  }`
+                }
                 alt="author"
-                className="detail__author-avatar"
+                className="avatar"
               />
-              <div>
-                <span className="detail__author-name">
-                  {element.account?.userName || "Anonymous"}
-                </span>
-                <span className="detail__date">
-                  {formatDate(element.createdAt)}
-                </span>
-              </div>
-            </div>
-            <div className="detail__stats">
-              <span className="stat">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                  <path d="M8 3c-3.866 0-7 2.134-7 4.75S4.134 12.5 8 12.5s7-2.134 7-4.75S11.866 3 8 3zm0 8c-3.038 0-5.5-1.567-5.5-3.5S4.962 4 8 4s5.5 1.567 5.5 3.5S11.038 11 8 11z"/>
-                  <circle cx="8" cy="7.5" r="1.5"/>
-                </svg>
-                {viewsCount} views
-              </span>
-              <span className="stat">
-                <span style={{ color: isFavourite ? "#FFD700" : "inherit" }}>
-                  {isFavourite ? "★" : "☆"}
-                </span>
-                {favouritesCount} favourites
-              </span>
+              <span>{element.account?.userName || "Anonymous"}</span>
             </div>
           </div>
+          <div className="stat">
+            👁️ <span>{viewsCount} views</span>
+          </div>
+          <div className="stat" onClick={handleToggleFavourite}>
+            <span
+              style={{
+                color: isFavourite ? "#FFD700" : "#aaa",
+                cursor: "pointer",
+              }}
+            >
+              {isFavourite ? "★" : "☆"}
+            </span>{" "}
+            <span>{favouritesCount}</span>
+          </div>
         </div>
-      </div>
+      </header>
 
       <div className="detail__row">
         {/* Preview */}
@@ -450,13 +514,17 @@ const ElementDetail = () => {
           <div className="tabs">
             <div className="tabs__header">
               <button
-                className={`tabs__button ${activeTab === "html" ? "tabs__button--active" : ""}`}
+                className={`tabs__button ${
+                  activeTab === "html" ? "tabs__button--active" : ""
+                }`}
                 onClick={() => setActiveTab("html")}
               >
                 HTML
               </button>
               <button
-                className={`tabs__button ${activeTab === "css" ? "tabs__button--active" : ""}`}
+                className={`tabs__button ${
+                  activeTab === "css" ? "tabs__button--active" : ""
+                }`}
                 onClick={() => setActiveTab("css")}
               >
                 CSS
@@ -495,7 +563,7 @@ const ElementDetail = () => {
           <span style={{ color: isFavourite ? "#FFD700" : "#888" }}>
             {isFavourite ? "★" : "☆"}
           </span>
-            {isFavourite ? "Saved" : "Save to favourites"}
+          {isFavourite ? "Save to favourites" : "Save to favourites"}
         </button>
 
         <div className="export-group">
@@ -547,44 +615,91 @@ const ElementDetail = () => {
       </div>
 
       {/* Comments Section */}
-      <div className="detail__comments">
-        <h2>Comments ({comments.length})</h2>
-        
-        {token ? (
-          <div className="comment-form">
-            <img 
-              src={currentUser?.avatar || "https://ui-avatars.com/api/?name=User"}
-              alt="your avatar"
-              className="comment-form__avatar"
-            />
-            <div className="comment-form__input-area">
-              <textarea
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-                placeholder="Viết bình luận..."
-                className="comment-form__textarea"
+      {/* Comments + Sidebar */}
+      <div className="detail__bottom">
+        {/* LEFT: Comments */}
+        <div className="detail__comments">
+          <h2>Comments ({comments.length})</h2>
+
+          {token ? (
+            <div className="comment-form">
+              <img
+                src={
+                  currentUser?.avatar || "https://ui-avatars.com/api/?name=User"
+                }
+                alt="your avatar"
+                className="comment-form__avatar"
               />
-              <button 
-                onClick={handlePostComment}
-                disabled={!newComment.trim()}
-                className="comment-form__submit"
-              >
-                Đăng bình luận
-              </button>
+              <div className="comment-form__input-area">
+                <textarea
+                  value={newComment}
+                  onChange={(e) => setNewComment(e.target.value)}
+                  placeholder="Viết bình luận..."
+                  className="comment-form__textarea"
+                />
+                <button
+                  onClick={handlePostComment}
+                  disabled={!newComment.trim()}
+                  className="comment-form__submit"
+                >
+                  Đăng bình luận
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="comment-login-prompt">
+              <p>Đăng nhập để bình luận</p>
+            </div>
+          )}
+
+          <div className="comments-list">
+            {comments.map((comment) => renderComment(comment))}
+            {comments.length === 0 && (
+              <p className="no-comments">
+                Chưa có bình luận nào. Hãy là người đầu tiên!
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* RIGHT: Sidebar */}
+        <aside className="detail__sidebar">
+          <h3 className="sidebar-title">{element.title}</h3>
+
+          <div className="sidebar-meta">
+            <div className="sidebar-date">
+              📅{" "}
+              {new Date(element.createdAt).toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              })}
+            </div>
+            <button className="sidebar-report">⚠️ Report</button>
+          </div>
+
+          <div className="sidebar-author">
+            <img
+              src={
+                element.account?.avatar ||
+                `https://ui-avatars.com/api/?name=${
+                  element.account?.userName || "User"
+                }`
+              }
+              alt="author"
+              className="sidebar-avatar"
+            />
+            <div className="sidebar-author-info">
+              <strong>{element.account?.userName || "Anonymous"}</strong>
+              <span>{element.account ? element.account.userName : "User"}</span>
             </div>
           </div>
-        ) : (
-          <div className="comment-login-prompt">
-            <p>Đăng nhập để bình luận</p>
-          </div>
-        )}
 
-        <div className="comments-list">
-          {comments.map(comment => renderComment(comment))}
-          {comments.length === 0 && (
-            <p className="no-comments">Chưa có bình luận nào. Hãy là người đầu tiên!</p>
-          )}
-        </div>
+          {/* Variation box */}
+          <div className="sidebar-variations">
+            <p>No variations yet, create one!</p>
+          </div>
+        </aside>
       </div>
     </div>
   );
