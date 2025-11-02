@@ -10,6 +10,7 @@ import LoginSuccess from "./pages/Login/LoginSuccess";
 import AddElement from "./pages/AddElement";
 import ProfilePage from "./pages/Profile";
 import FavouritePage from "./pages/Favourite";
+import SettingProfile from "./pages/Setting";
 
 function App() {
   return (
@@ -24,7 +25,8 @@ function App() {
         <Route path="/element/:id" element={<ElementDetail />} />
         <Route path="/login/success" element={<LoginSuccess />} />
         <Route path="/elements/new" element={<AddElement />} />
-        {/* Route /preview đã được xóa bỏ vì nó là code cũ gây lỗi */}
+        <Route path="/settings" element={<SettingProfile />} />
+
         <Route path="*" element={<div>404 Not Found</div>} />
       </Routes>
     </Suspense>

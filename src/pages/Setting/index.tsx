@@ -1,6 +1,16 @@
-import React from 'react';
-import './settingprofile.scss';
-import { FaUser, FaTrophy, FaEnvelope, FaUserCog, FaChartBar, FaBuilding, FaTwitter, FaGlobe, FaMapMarkerAlt, FaPen } from 'react-icons/fa';
+import "./style.scss";
+import {
+  FaUser,
+  FaTrophy,
+  FaEnvelope,
+  FaUserCog,
+  FaChartBar,
+  FaBuilding,
+  FaTwitter,
+  FaGlobe,
+  FaMapMarkerAlt,
+  FaPen,
+} from "react-icons/fa";
 
 const SettingProfile = () => {
   return (
@@ -9,47 +19,76 @@ const SettingProfile = () => {
       <aside className="spgSidebar">
         <div className="spgSettingsTitle">Settings</div>
         <nav className="spgMenu">
-          <div className="spgMenuItem" tabIndex={0}><FaUser className="spgMenuIcon"/>Hồ sơ</div>
-          <div className="spgMenuItem" tabIndex={0}><FaTrophy className="spgMenuIcon"/>Thành tích</div>
-          <div className="spgMenuItem" tabIndex={0}><FaEnvelope className="spgMenuIcon"/>Email</div>
-          <div className="spgMenuItem" tabIndex={0}><FaUserCog className="spgMenuIcon"/>Tài khoản</div>
-          <div className="spgMenuItem" tabIndex={0}><FaChartBar className="spgMenuIcon"/>Số liệu thống kê</div>
+          <div className="spgMenuItem" tabIndex={0}>
+            <FaUser className="spgMenuIcon" />
+            Hồ sơ
+          </div>
+          <div className="spgMenuItem" tabIndex={0}>
+            <FaTrophy className="spgMenuIcon" />
+            Thành tích
+          </div>
+          <div className="spgMenuItem" tabIndex={0}>
+            <FaEnvelope className="spgMenuIcon" />
+            Email
+          </div>
+          <div className="spgMenuItem" tabIndex={0}>
+            <FaUserCog className="spgMenuIcon" />
+            Tài khoản
+          </div>
+          <div className="spgMenuItem" tabIndex={0}>
+            <FaChartBar className="spgMenuIcon" />
+            Số liệu thống kê
+          </div>
         </nav>
       </aside>
       {/* Main Content */}
       <main className="spgMain">
         <div className="spgHeader">Personal Information</div>
-        <div className="spgHint">Thông tin này sẽ được hiển thị công khai trên hồ sơ của bạn.</div>
+        <div className="spgHint">
+          Thông tin này sẽ được hiển thị công khai trên hồ sơ của bạn.
+        </div>
         <form className="spgForm">
           <div className="spgRow">
             <div className="spgField">
-              <label><FaUser className="spgFieldIcon"/> Tên</label>
+              <label>
+                <FaUser className="spgFieldIcon" /> Tên
+              </label>
               <input type="text" placeholder="User" />
             </div>
             <div className="spgField">
-              <label><FaMapMarkerAlt className="spgFieldIcon"/> Địa chỉ</label>
+              <label>
+                <FaMapMarkerAlt className="spgFieldIcon" /> Địa chỉ
+              </label>
               <input type="text" placeholder="Địa chỉ của bạn" />
             </div>
           </div>
           <div className="spgRow">
             <div className="spgField">
-              <label><FaBuilding className="spgFieldIcon"/> Công ty</label>
+              <label>
+                <FaBuilding className="spgFieldIcon" /> Công ty
+              </label>
               <input type="text" placeholder="Công ty của bạn" />
             </div>
             <div className="spgField">
-              <label><FaTwitter className="spgFieldIcon"/> Twitter</label>
+              <label>
+                <FaTwitter className="spgFieldIcon" /> Twitter
+              </label>
               <input type="text" placeholder="Twitter của bạn" />
             </div>
           </div>
           <div className="spgRow">
             <div className="spgFieldFull">
-              <label><FaGlobe className="spgFieldIcon"/> Websites</label>
+              <label>
+                <FaGlobe className="spgFieldIcon" /> Websites
+              </label>
               <input type="text" placeholder="Địa chỉ trang web của bạn" />
             </div>
           </div>
           <div className="spgRow">
             <div className="spgFieldFull">
-              <label><FaPen className="spgFieldIcon"/> Ghi chú</label>
+              <label>
+                <FaPen className="spgFieldIcon" /> Ghi chú
+              </label>
               <textarea placeholder="Thêm ghi chú ......" rows={4}></textarea>
             </div>
           </div>
