@@ -32,6 +32,7 @@ const FavouritePage = () => {
     })
       .then((res) => res.json())
       .then((data: IComponent[]) => {
+        console.log("Fetched favourites:", data);
         setFavourites(data);
       })
       .catch((err) => console.error("Fetch favourites failed:", err))

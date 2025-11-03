@@ -33,7 +33,7 @@ const Elements = () => {
       try {
         const res = await fetch("http://localhost:3000/components");
         const data = await res.json();
-
+        console.log("Fetched components:", data);
         const publicElements = data.filter(
           (el: IElement) => el.status === "public"
         );
