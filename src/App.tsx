@@ -11,6 +11,8 @@ import AddElement from "./pages/AddElement";
 import ProfilePage from "./pages/Profile";
 import FavouritePage from "./pages/Favourite";
 import SettingProfile from "./pages/Setting";
+import AdminPage from "./pages/AdminPage";
+import AdminRoute from "./AdminRoute";
 
 function App() {
   return (
@@ -26,7 +28,14 @@ function App() {
         <Route path="/login/success" element={<LoginSuccess />} />
         <Route path="/elements/new" element={<AddElement />} />
         <Route path="/settings" element={<SettingProfile />} />
-
+        <Route
+          path="/admin"
+          element={
+            <AdminRoute>
+              <AdminPage />
+            </AdminRoute>
+          }
+        />
         <Route path="*" element={<div>404 Not Found</div>} />
       </Routes>
     </Suspense>

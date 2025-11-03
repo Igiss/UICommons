@@ -1,35 +1,46 @@
 // File: src/pages/LoginSuccess.tsx
-
 import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 
 const LoginSuccess = () => {
-  // Hook này của react-router-dom giúp đọc các tham số trên URL (ví dụ: ?token=xyz)
   const [searchParams] = useSearchParams();
 
-  // Dùng useEffect để chạy logic ngay khi component được render
   useEffect(() => {
-    // Lấy giá trị của 'token' từ URL
     const token = searchParams.get("token");
 
-    if (token) {
-      // 1. Nếu có token, lưu nó vào localStorage
-      console.log("Token found, saving to localStorage:", token);
-      localStorage.setItem("authToken", token);
-
-      // 2. Chuyển hướng về trang chủ VÀ tải lại toàn bộ trang.
-      // Việc tải lại trang sẽ buộc Navbar phải đọc lại localStorage và cập nhật giao diện.
-      window.location.href = "/";
-    } else {
-      // Nếu không có token, có thể đã có lỗi, quay về trang login
+    if (!token) {
       console.error("No token found in URL, redirecting to login.");
       window.location.href = "/login?error=true";
+      return;
     }
 
-    // Mảng rỗng `[]` ở cuối đảm bảo effect này chỉ chạy một lần duy nhất
+    // ✅ Lưu token vào localStorage
+    localStorage.setItem("authToken", token);
+
+    // ✅ Gọi API để lấy thông tin người dùng
+    fetch("http://localhost:3000/profile/me", {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        const role = data.role || "user";
+        localStorage.setItem("userRole", role);
+
+        // ✅ Kiểm tra role
+        if (role === "admin") {
+          console.log("Admin detected, redirecting to admin dashboard");
+          window.location.href = "/admin";
+        } else {
+          console.log("Normal user, redirecting to homepage");
+          window.location.href = "/";
+        }
+      })
+      .catch((err) => {
+        console.error("Error fetching user profile:", err);
+        window.location.href = "/login?error=true";
+      });
   }, [searchParams]);
 
-  // Giao diện tạm thời trong lúc xử lý
   return (
     <div style={{ padding: "40px", textAlign: "center", color: "white" }}>
       <h1>Login Successful!</h1>
