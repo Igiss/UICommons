@@ -13,6 +13,7 @@ import FavouritePage from "./pages/Favourite";
 import SettingProfile from "./pages/Setting";
 import AdminPage from "./pages/AdminPage";
 import AdminRoute from "./AdminRoute";
+import Spotlight from "./pages/Spotlight";
 
 function App() {
   return (
@@ -28,6 +29,8 @@ function App() {
         <Route path="/login/success" element={<LoginSuccess />} />
         <Route path="/elements/new" element={<AddElement />} />
         <Route path="/settings" element={<SettingProfile />} />
+        <Route path="/spotlight" element={<Spotlight />} />
+
         <Route
           path="/admin"
           element={

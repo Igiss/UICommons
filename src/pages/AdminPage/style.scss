@@ -5,6 +5,7 @@ $text-color: #f0f0f0;
 $primary-color: #3b82f6;
 $success-color: #10b981;
 $danger-color: #ef4444;
+@use "sass:color";
 
 .review-dashboard {
   padding: 3rem 2rem;
@@ -112,16 +113,18 @@ $danger-color: #ef4444;
         &--approve {
           background-color: $success-color;
           color: $background-dark;
+
           &:hover {
-            background-color: darken($success-color, 10%);
+            background-color: color.adjust($success-color, $lightness: -10%);
           }
         }
 
         &--reject {
           background-color: $danger-color;
           color: $text-color;
+
           &:hover {
-            background-color: darken($danger-color, 10%);
+            background-color: color.adjust($danger-color, $lightness: -10%);
           }
         }
       }

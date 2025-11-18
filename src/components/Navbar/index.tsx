@@ -82,6 +82,9 @@ const Navbar = () => {
         <li>
           <Link to="/elements">Elements</Link>
         </li>
+        <li>
+          <Link to="/spotlight">Spotlight</Link>
+        </li>
       </ul>
 
       <div className="actions">
