@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import "./style.scss";
 
 import { css } from "@codemirror/lang-css";
@@ -7,11 +7,13 @@ import { html } from "@codemirror/lang-html";
 import { EditorView, lineNumbers } from "@codemirror/view";
 import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 import CodeMirror from "@uiw/react-codemirror";
+
 import { generateFrameworkCode } from "../../utils/codeGenerator";
 import { getTemplate } from "../../utils/templates";
 import { FiRefreshCw, FiSave, FiSend } from "react-icons/fi";
 
-// 🧩 Danh sách loại component cố định
+type PageMode = "add" | "edit" | "view";
+
 const CATEGORY_LIST = [
   "button",
   "toggle switch",
@@ -25,8 +27,13 @@ const CATEGORY_LIST = [
   "tooltips",
 ];
 
-const AddElement = () => {
+const AddElement = ({ mode }: { mode: PageMode }) => {
   const navigate = useNavigate();
+  const { id } = useParams();
+
+  const isAdd = mode === "add";
+  const isEdit = mode === "edit";
+  const isView = mode === "view";
 
   const [title, setTitle] = useState("");
   const [htmlCode, setHtmlCode] = useState("");
@@ -35,24 +42,46 @@ const AddElement = () => {
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [previewSrc, setPreviewSrc] = useState("");
-  const [showPopup, setShowPopup] = useState(true);
+  const [showPopup, setShowPopup] = useState(isAdd);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
 
-  // 🧩 Khi chọn loại → tự điền code mẫu
-  const handleSelectType = (type: string) => {
-    const template = getTemplate(type);
-    if (template) {
-      setSelectedCategory(type);
-      setTitle(template.title);
-      setHtmlCode(template.html);
-      setCssCode(template.css);
-    } else {
-      setSelectedCategory(type);
-    }
-    setShowPopup(false);
-  };
+  const token = localStorage.getItem("authToken");
+  const myAccountId = localStorage.getItem("accountId");
 
-  // 🧩 Cập nhật preview realtime
+  // ==========================================
+  // LOAD DATA CHO EDIT HOẶC VIEW
+  // ==========================================
+  useEffect(() => {
+    if (!id) return;
+
+    fetch(`http://localhost:3000/components/${id}`, {
+      headers: { Authorization: token ? `Bearer ${token}` : "" },
+    })
+      .then(async (res) => {
+        if (res.status === 403) throw new Error("Bạn không có quyền truy cập.");
+        return res.json();
+      })
+      .then((data) => {
+        // Nếu là draft thuộc về user → EDIT MODE
+        if (data.status === "draft" && data.accountId === myAccountId) {
+          setTitle(data.title);
+          setHtmlCode(data.htmlCode);
+          setCssCode(data.cssCode);
+          setSelectedCategory(data.category || data.type);
+          setShowPopup(false);
+          return;
+        }
+
+        // Không hợp lệ
+        alert("Bạn không có quyền chỉnh sửa.");
+        navigate("/elements");
+      })
+      .catch((err) => {
+        alert(err.message);
+        navigate("/elements");
+      });
+  }, [id, mode, token, myAccountId, navigate]);
+
   useEffect(() => {
     const doc = `
       <style>
@@ -62,7 +91,6 @@ const AddElement = () => {
           display: flex;
           justify-content: center;
           align-items: center;
-          
         }
         ${cssCode}
       </style>
@@ -71,13 +99,35 @@ const AddElement = () => {
     setPreviewSrc(doc);
   }, [htmlCode, cssCode]);
 
-  const handleChangetype = () => {
+  // Chọn category
+  const handleSelectType = (type: string) => {
+    const tpl = getTemplate(type);
+    setSelectedCategory(type);
+
+    if (tpl) {
+      setTitle(tpl.title);
+      setHtmlCode(tpl.html);
+      setCssCode(tpl.css);
+    }
+
+    setShowPopup(false);
+  };
+
+  // Đổi loại component
+  const handleChangeType = () => {
+    if (isEdit) {
+      alert("Draft đang chỉnh sửa không được đổi loại.");
+      return;
+    }
     setShowPopup(true);
   };
-  // 🧠 Gửi dữ liệu lên backend
+
+  // ==========================================
+  // SUBMIT FORM (ADD – EDIT)
+  // ==========================================
   const handleSubmit = async (
     e: React.FormEvent,
-    status: "draft" | "public" = "public"
+    status: "draft" | "review" = "review"
   ) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -89,19 +139,22 @@ const AddElement = () => {
       const svelteCode = generateFrameworkCode(htmlCode, cssCode, "svelte");
       const litCode = generateFrameworkCode(htmlCode, cssCode, "lit");
 
-      const token = localStorage.getItem("authToken");
-      const accountId = localStorage.getItem("accountId"); // 👈 lưu khi login
-
       if (!selectedCategory) throw new Error("Vui lòng chọn loại component!");
 
-      const res = await fetch("http://localhost:3000/components", {
-        method: "POST",
+      const url = isEdit
+        ? `http://localhost:3000/components/${id}`
+        : "http://localhost:3000/components";
+
+      const method = isEdit ? "PUT" : "POST";
+
+      const res = await fetch(url, {
+        method,
         headers: {
           "Content-Type": "application/json",
           Authorization: token ? `Bearer ${token}` : "",
         },
         body: JSON.stringify({
-          title: title || selectedCategory,
+          title,
           htmlCode,
           cssCode,
           reactCode,
@@ -109,12 +162,11 @@ const AddElement = () => {
           svelteCode,
           litCode,
           category: selectedCategory,
-          status, // 👈 "draft" hoặc "public"
-          accountId,
+          status,
         }),
       });
 
-      if (!res.ok) throw new Error("Không thể tạo element.");
+      if (!res.ok) throw new Error("Không thể lưu element.");
 
       navigate("/elements");
     } catch (err) {
@@ -124,13 +176,22 @@ const AddElement = () => {
     }
   };
 
+  // ==========================================
+  // RENDER
+  // ==========================================
   return (
     <div className="detail add-element">
       <Link to="/elements">⬅ Quay lại danh sách</Link>
-      <h1>Tạo Element Mới</h1>
+      <h1>
+        {isEdit
+          ? "Chỉnh sửa Draft"
+          : isView
+          ? "Xem Component"
+          : "Tạo Component"}
+      </h1>
 
-      {/* 🧩 POPUP chọn loại element */}
-      {showPopup && (
+      {/* POPUP CHỌN LOẠI */}
+      {showPopup && isAdd && (
         <div className="popup-overlay">
           <div className="popup-modern">
             <div className="popup-header">
@@ -164,9 +225,8 @@ const AddElement = () => {
         </div>
       )}
 
-      {/* 🧱 Layout chính */}
+      {/* LAYOUT CHÍNH */}
       <div className="detail__row">
-        {/* LEFT: Preview */}
         <div className="detail__preview">
           <iframe
             title="Preview"
@@ -175,7 +235,6 @@ const AddElement = () => {
           />
         </div>
 
-        {/* RIGHT: Code Editor */}
         <div className="detail__code-viewer">
           <form id="element-form" onSubmit={(e) => handleSubmit(e)}>
             <div className="form-group">
@@ -185,10 +244,11 @@ const AddElement = () => {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Ví dụ: Button Gradient"
+                disabled={isView}
               />
             </div>
 
-            {/* Tabs HTML/CSS */}
+            {/* Tabs */}
             <div className="tabs">
               <div className="tabs__header">
                 <button
@@ -223,8 +283,10 @@ const AddElement = () => {
                       EditorView.lineWrapping,
                     ]}
                     onChange={setHtmlCode}
+                    editable={!isView}
                   />
                 )}
+
                 {activeTab === "css" && (
                   <CodeMirror
                     value={cssCode}
@@ -232,6 +294,7 @@ const AddElement = () => {
                     theme={vscodeDark}
                     extensions={[css(), lineNumbers(), EditorView.lineWrapping]}
                     onChange={setCssCode}
+                    editable={!isView}
                   />
                 )}
               </div>
@@ -241,36 +304,41 @@ const AddElement = () => {
           </form>
         </div>
       </div>
-      <div className="form-actions">
-        <button
-          type="button"
-          className="action-btn secondary"
-          onClick={handleChangetype}
-        >
-          <FiRefreshCw />
-          <span>Change type</span>
-        </button>
 
-        <button
-          type="button"
-          className="action-btn secondary"
-          disabled={isSubmitting}
-          onClick={(e) => handleSubmit(e, "draft")}
-        >
-          <FiSave />
-          <span>Save as a draft</span>
-        </button>
+      {/* NÚT SUBMIT */}
+      {!isView && (
+        <div className="form-actions">
+          <button
+            type="button"
+            className="action-btn secondary"
+            onClick={handleChangeType}
+            disabled={isEdit}
+          >
+            <FiRefreshCw />
+            <span>Change type</span>
+          </button>
 
-        <button
-          type="submit"
-          form="element-form"
-          className="action-btn primary"
-          disabled={isSubmitting}
-        >
-          <FiSend />
-          <span>{isSubmitting ? "Submitting..." : "Submit for review"}</span>
-        </button>
-      </div>
+          <button
+            type="button"
+            className="action-btn secondary"
+            disabled={isSubmitting}
+            onClick={(e) => handleSubmit(e, "draft")}
+          >
+            <FiSave />
+            <span>Save as draft</span>
+          </button>
+
+          <button
+            type="submit"
+            form="element-form"
+            className="action-btn primary"
+            disabled={isSubmitting}
+          >
+            <FiSend />
+            <span>{isSubmitting ? "Submitting..." : "Submit for review"}</span>
+          </button>
+        </div>
+      )}
     </div>
   );
 };

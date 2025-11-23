@@ -81,6 +81,7 @@ const ElementDetail = () => {
         console.error("Error fetching current user:", err);
       }
     };
+
     fetchCurrentUser();
   }, [token]);
 

@@ -1,5 +1,3 @@
-// File: src/App.js (Phiên bản đúng)
-
 import { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import ElementDetail from "./pages/Detail";
@@ -29,9 +27,15 @@ function App() {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/favourite" element={<FavouritePage />} />
         <Route path="/elements" element={<Elements />} />
+
+        <Route path="/elements/new" element={<AddElement mode="add" />} />
+
+        <Route path="/elements/:id/edit" element={<AddElement mode="edit" />} />
+
         <Route path="/element/:id" element={<ElementDetail />} />
+
         <Route path="/login/success" element={<LoginSuccess />} />
-        <Route path="/elements/new" element={<AddElement />} />
+
         <Route path="/settings" element={<SettingProfile />}>
           <Route index element={<Profile />} />
           <Route path="account" element={<AccountSettings />} />
@@ -39,6 +43,7 @@ function App() {
           <Route path="email" element={<EmailSettings />} />
           <Route path="stats" element={<StatsPage />} />
         </Route>
+
         <Route path="/spotlight" element={<Spotlight />} />
 
         <Route
@@ -49,6 +54,7 @@ function App() {
             </AdminRoute>
           }
         />
+
         <Route path="*" element={<div>404 Not Found</div>} />
       </Routes>
     </Suspense>

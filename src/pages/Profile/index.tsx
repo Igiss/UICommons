@@ -170,7 +170,15 @@ const ProfilePage = () => {
       return (
         <div className="grid">
           {tabPosts.map((post) => (
-            <Link to={`/element/${post._id}`} key={post._id} className="card">
+            <Link
+              to={
+                post.status === "draft"
+                  ? `/elements/${post._id}/edit`
+                  : `/element/${post._id}`
+              }
+              key={post._id}
+              className="card"
+            >
               <ElementPreview htmlCode={post.htmlCode} cssCode={post.cssCode} />
               <div className="card-info">
                 <h3>{post.title}</h3>
