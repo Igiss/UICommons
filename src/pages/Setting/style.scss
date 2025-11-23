@@ -43,7 +43,18 @@
   font-size: 1.25em;
   min-width: 21px;
 }
+// Style cho Link navigation
+a.spgMenuItem {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  align-items: center;
+}
 
+.spgMenuItemActive {
+  background: #212e47 !important;
+  color: #7ce6fd !important;
+}
 .spgMain {
   flex: 1;
   display: flex;
