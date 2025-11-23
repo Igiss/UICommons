@@ -1,5 +1,3 @@
-// File: src/App.js (Phiên bản đúng)
-
 import { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import ElementDetail from "./pages/Detail";
@@ -10,7 +8,11 @@ import LoginSuccess from "./pages/Login/LoginSuccess";
 import AddElement from "./pages/AddElement";
 import ProfilePage from "./pages/Profile";
 import FavouritePage from "./pages/Favourite";
-import SettingProfile from "./pages/Setting";
+import SettingProfile, { Profile } from "./pages/Setting";
+import AccountSettings from "./pages/Setting/Account";
+import Achievements from "./pages/Setting/Achivements";
+import EmailSettings from "./pages/Setting/Email";
+import StatsPage from "./pages/Setting/Stats";
 import AdminPage from "./pages/AdminPage";
 import AdminRoute from "./AdminRoute";
 import Spotlight from "./pages/Spotlight";
@@ -31,10 +33,23 @@ function App() {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/favourite" element={<FavouritePage />} />
         <Route path="/elements" element={<Elements />} />
+
+        <Route path="/elements/new" element={<AddElement mode="add" />} />
+
+        <Route path="/elements/:id/edit" element={<AddElement mode="edit" />} />
+
         <Route path="/element/:id" element={<ElementDetail />} />
+
         <Route path="/login/success" element={<LoginSuccess />} />
-        <Route path="/elements/new" element={<AddElement />} />
-        <Route path="/settings" element={<SettingProfile />} />
+
+        <Route path="/settings" element={<SettingProfile />}>
+          <Route index element={<Profile />} />
+          <Route path="account" element={<AccountSettings />} />
+          <Route path="achievements" element={<Achievements />} />
+          <Route path="email" element={<EmailSettings />} />
+          <Route path="stats" element={<StatsPage />} />
+        </Route>
+
         <Route path="/spotlight" element={<Spotlight />} />
         <Route path="/challenges" element={<Challenges />} />
         <Route path="/challenges/:id" element={<ChallengeDetail />} />

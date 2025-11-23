@@ -23,6 +23,9 @@ const LoginSuccess = () => {
     })
       .then((res) => res.json())
       .then((data) => {
+        if (data?._id) {
+          localStorage.setItem("accountId", data._id);
+        }
         const role = data.role || "user";
         localStorage.setItem("userRole", role);
 

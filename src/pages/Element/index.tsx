@@ -19,7 +19,7 @@ export interface IElement {
   favouritesCount?: number;
 }
 interface IAuthor {
-  username: string;
+  userName: string;
   fullName: string;
   avatar: string;
 }
@@ -91,11 +91,7 @@ const Elements = () => {
 
             <div className="meta">
               <div className="author">
-                <strong>
-                  {el.accountId?.fullName ||
-                    el.accountId?.username ||
-                    "Unknown"}
-                </strong>
+                <strong>{el.accountId?.userName || "Unknown"}</strong>
               </div>
               <div className="stats">
                 <span>{el.viewsCount?.toLocaleString() || 0} views</span>

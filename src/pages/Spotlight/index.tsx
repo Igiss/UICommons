@@ -182,7 +182,7 @@ const Spotlight = () => {
                       <p className="spotlight__creator-score">
                         {isFav && "⭐ "}
                         {scoreDisplay}
-                        {tab !== "views" && ` ${unit}`}
+                        {tab !== "views" && ` Favorite`}
                       </p>
                     </div>
                   </div>
