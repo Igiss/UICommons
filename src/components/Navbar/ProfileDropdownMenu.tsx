@@ -1,8 +1,8 @@
-// File: src/pages/Navbar/ProfileDropdownMenu.tsx
+// File: src/components/Navbar/ProfileDropdownMenu.tsx
 
 import React from "react";
 import { Link } from "react-router-dom";
-import "./style.scss"; // Chúng ta sẽ dùng chung file style với Navbar
+import "./style.scss";
 
 interface ProfileDropdownMenuProps {
   onLogout: () => void;
@@ -11,6 +11,9 @@ interface ProfileDropdownMenuProps {
 const ProfileDropdownMenu: React.FC<ProfileDropdownMenuProps> = ({
   onLogout,
 }) => {
+  // Get user role from localStorage
+  const userRole = localStorage.getItem("userRole");
+
   return (
     <div className="profile-dropdown-menu">
       <ul>
@@ -23,8 +26,34 @@ const ProfileDropdownMenu: React.FC<ProfileDropdownMenuProps> = ({
         <li>
           <Link to="/settings">Settings</Link>
         </li>
+
+        {/* Admin-only menu items */}
+        {userRole === "admin" && (
+          <>
+            <li>
+              <Link to="/admin">Review Components</Link>
+            </li>
+            <li>
+              <Link to="/admin/challenges">Manage Challenges</Link>
+            </li>
+            <li>
+              <Link to="/admin/users">Manage Users</Link>
+            </li>
+          </>
+        )}
+
+        {/* Reviewer/Moderator/Admin can access challenges */}
+        {["reviewer", "moderator", "admin"].includes(userRole || "") && (
+          <li>
+            <Link to="/challenges">
+              <span className="reviewer-badge">⭐</span> Rate Challenges
+            </Link>
+          </li>
+        )}
       </ul>
+
       <div className="divider"></div>
+
       <ul>
         <li>
           <a href="#">Give feedback</a>
@@ -33,7 +62,9 @@ const ProfileDropdownMenu: React.FC<ProfileDropdownMenuProps> = ({
           <a href="#">Report bug</a>
         </li>
       </ul>
+
       <div className="divider"></div>
+
       <ul>
         <li>
           <a
@@ -46,7 +77,9 @@ const ProfileDropdownMenu: React.FC<ProfileDropdownMenuProps> = ({
           </a>
         </li>
       </ul>
+
       <div className="divider"></div>
+
       <ul>
         <li>
           <button onClick={onLogout} className="logout-menu-btn">

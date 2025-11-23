@@ -15,6 +15,12 @@ import AdminPage from "./pages/AdminPage";
 import AdminRoute from "./AdminRoute";
 import Spotlight from "./pages/Spotlight";
 
+import Challenges from "./pages/Challenges";
+import ChallengeDetail from "./pages/ChallengeDetail";
+import AdminChallenges from "./pages/AdminChallenges";
+import CreateChallengeEntry from "./pages/CreateChallengeEntry";
+import AdminUsers from "./pages/AdminUsers";
+
 function App() {
   return (
     <Suspense fallback={<div>Loading page...</div>}>
@@ -30,7 +36,12 @@ function App() {
         <Route path="/elements/new" element={<AddElement />} />
         <Route path="/settings" element={<SettingProfile />} />
         <Route path="/spotlight" element={<Spotlight />} />
-
+        <Route path="/challenges" element={<Challenges />} />
+        <Route path="/challenges/:id" element={<ChallengeDetail />} />
+        <Route 
+          path="/challenges/:challengeId/create-entry" 
+          element={<CreateChallengeEntry />} 
+        />
         <Route
           path="/admin"
           element={
@@ -39,6 +50,25 @@ function App() {
             </AdminRoute>
           }
         />
+
+        <Route 
+          path="/admin/users" 
+          element={
+            <AdminRoute>
+            <AdminUsers />
+            </AdminRoute>
+          } 
+        />
+
+        <Route 
+          path="/admin/challenges" 
+          element={
+            <AdminRoute>
+              <AdminChallenges />
+            </AdminRoute>
+          } 
+        />
+
         <Route path="*" element={<div>404 Not Found</div>} />
       </Routes>
     </Suspense>

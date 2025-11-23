@@ -85,6 +85,9 @@ const Navbar = () => {
         <li>
           <Link to="/spotlight">Spotlight</Link>
         </li>
+        <li>
+          <Link to="/challenges">Challenges</Link>
+        </li>
       </ul>
 
       <div className="actions">
