@@ -111,11 +111,10 @@
 
   /* Component Card (Weekly Highlights) */
   &__card {
-    background: #141414; // Nền card tối
     border: 1px solid #222;
     border-radius: 12px;
-    padding: 15px; // Giảm padding một chút
-    height: 250px; // Chiều cao cố định cho preview
+    padding: 15px;
+    height: 500px;
     text-decoration: none;
     overflow: hidden;
     box-sizing: border-box;
