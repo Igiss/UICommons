@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { FiSearch, FiChevronDown, FiBookmark } from "react-icons/fi";
 import ElementPreview from "../../components/ElementPreview";
 import "../Element/style.scss";
 
@@ -12,28 +13,30 @@ export interface IElement {
   vueCode?: string;
   litCode?: string;
   svelteCode?: string;
-  accountId: IAuthor | null; // backend có thể trả về object chứa fullName/username
+  accountId: IAuthor | null;
   category?: string;
   status?: "draft" | "public";
   viewsCount?: number;
   favouritesCount?: number;
 }
+
 interface IAuthor {
   userName: string;
   fullName: string;
   avatar: string;
 }
+
 const Elements = () => {
+  const { category } = useParams<{ category: string }>();
   const [elements, setElements] = useState<IElement[]>([]);
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("all");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await fetch("http://localhost:3000/components");
         const data = await res.json();
-        console.log("Fetched components:", data);
+
         const publicElements = data.filter(
           (el: IElement) => el.status === "public"
         );
@@ -47,59 +50,64 @@ const Elements = () => {
   }, []);
 
   const filtered = elements.filter((el) => {
+    const currentCategory = category || "all";
     const matchSearch = el.title?.toLowerCase().includes(search.toLowerCase());
-    const matchCategory = category === "all" || el.category === category;
+
+    const matchCategory =
+      currentCategory === "all" ||
+      el.category?.toLowerCase() === currentCategory.toLowerCase();
+
     return matchSearch && matchCategory;
   });
 
   return (
     <div className="elements-page">
-      <h1>All Elements</h1>
+      <div className="toolbar-header">
+        <div className="theme-dropdown">
+          <span className="current-theme">Dark</span>
+          <FiChevronDown className="dropdown-icon" />
+        </div>
 
-      {/* Bộ lọc */}
-      <div className="filters">
-        <input
-          type="text"
-          placeholder="🔍 Search element..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-
-        <select value={category} onChange={(e) => setCategory(e.target.value)}>
-          {/* ... các <option> ... */}
-          <option value="all">All Categories</option>
-          <option value="button">Button</option>
-          <option value="toggle switch">Toggle Switch</option>
-          <option value="checkbox">Checkbox</option>
-          <option value="card">Card</option>
-          <option value="loader">Loader</option>
-          <option value="input">Input</option>
-          <option value="form">Form</option>
-          <option value="pattern">Pattern</option>
-          <option value="radio buttons">Radio Buttons</option>
-          <option value="tooltips">Tooltips</option>
-        </select>
+        <div className="search-wrapper">
+          <input
+            type="text"
+            placeholder="Search tags, users, posts..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <FiSearch className="search-icon" />
+        </div>
       </div>
 
-      {/* Grid - Đã xóa div .home */}
-      <div className="grid">
-        {filtered.map((el) => (
-          <div key={el._id} className="card-wrapper">
-            <Link to={`/element/${el._id}`} className="card">
-              <ElementPreview htmlCode={el.htmlCode} cssCode={el.cssCode} />
-            </Link>
+      <div
+        className="grid"
+        style={{ gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))" }}
+      >
+        {filtered.length > 0 ? (
+          filtered.map((el) => (
+            <div key={el._id} className="card-wrapper">
+              <Link to={`/element/${el._id}`} className="card">
+                <ElementPreview htmlCode={el.htmlCode} cssCode={el.cssCode} />
+              </Link>
 
-            <div className="meta">
-              <div className="author">
-                <strong>{el.accountId?.userName || "Unknown"}</strong>
-              </div>
-              <div className="stats">
-                <span>{el.viewsCount?.toLocaleString() || 0} views</span>
-                <span>⭐ {el.favouritesCount || 0}</span>
+              <div className="meta">
+                <div className="author">
+                  <strong>{el.accountId?.userName || "Unknown"}</strong>
+                </div>
+                <div className="stats">
+                  <span>{el.viewsCount?.toLocaleString() || 0} views</span>
+                  <span>
+                    <FiBookmark /> {el.favouritesCount || 0}
+                  </span>
+                </div>
               </div>
             </div>
+          ))
+        ) : (
+          <div style={{ color: "#888", padding: "20px" }}>
+            No elements found for category "{category}".
           </div>
-        ))}
+        )}
       </div>
     </div>
   );

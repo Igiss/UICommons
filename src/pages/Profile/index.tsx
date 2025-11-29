@@ -168,7 +168,7 @@ const ProfilePage = () => {
 
     if (tabPosts.length > 0) {
       return (
-        <div className="grid">
+        <div className="grid" style={{ padding: 0 }}>
           {tabPosts.map((post) => (
             <Link
               to={

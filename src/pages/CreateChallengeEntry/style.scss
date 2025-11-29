@@ -41,7 +41,11 @@
   &__banner {
     max-width: 1400px;
     margin: 0 auto 2rem;
-    background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(139, 92, 246, 0.05));
+    background: linear-gradient(
+      135deg,
+      rgba(124, 58, 237, 0.1),
+      rgba(139, 92, 246, 0.05)
+    );
     border: 1px solid rgba(124, 58, 237, 0.3);
     border-radius: 16px;
     padding: 2rem;
@@ -175,6 +179,7 @@
       }
 
       input[type="text"] {
+        background: #141414;
         background: #111;
         border: 1px solid #334155;
         padding: 0.875rem 1rem;

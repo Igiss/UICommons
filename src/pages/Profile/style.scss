@@ -1,193 +1,250 @@
-/* Biến màu cơ bản (Giả định dựa trên ảnh trước đó) */
-$background-color: #1a1a1a; // Nền tối
-$surface-color: #2e2e2e; // Nền của nút, tab
-$text-color: #ffffff;
-$text-color-secondary: #8f8f8f; // Chữ xám nhạt
+/* ================================================================
+   PROFILE PAGE — UICommons Inspired Theme
+   Clean · Modern · Dark · Smooth
+================================================================ */
+
+$bg-dark: #0d0d0d;
+$bg-card: #1a1a1a;
+$bg-hover: #222;
+$border-color: #2a2a2a;
+
+$text-main: #ffffff;
+$text-sub: #9b9b9b;
+$text-faded: #6d6d6d;
+
+$accent: #7b5cff;
+
+/* ================================================================
+   ROOT PAGE
+================================================================ */
 
 .profile-page {
-  max-width: 1200px;
-  margin: 40px auto;
-  padding: 40px;
-  color: $text-color;
+  max-width: 86%;
+  padding: 20px 30px;
+  color: $text-main;
+  background: transparent;
+}
 
-  /* Header */
-  .profile-header {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-    margin-bottom: 40px;
+/* ================================================================
+   HEADER — Avatar + Info
+================================================================ */
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 26px;
+  border-radius: 18px;
+  margin-bottom: 32px;
+  transition: 0.2s ease;
+
+  &:hover {
+    border-color: #3a3a3a;
+  }
+}
+
+.profile-avatar {
+  width: 130px;
+  height: 130px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: $bg-dark;
+  border: 1px solid #333;
+
+  .avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.profile-info {
+  flex: 1;
+
+  h1 {
+    font-size: 2rem;
+    margin: 0 0 4px 0;
+    font-weight: 600;
   }
 
-  .profile-avatar {
-    width: 120px;
-    height: 120px;
-    flex-shrink: 0;
-
-    .avatar {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 16px;
-      // Thêm một màu nền phòng khi ảnh chưa tải kịp
-      background-color: $surface-color;
-    }
+  .username {
+    font-size: 1.1rem;
+    color: $accent;
+    margin-bottom: 4px;
   }
 
-  .profile-info {
-    h1 {
-      font-size: 2.2rem;
-      font-weight: 600;
-      margin: 0;
-    }
-
-    .username {
-      font-size: 1.1rem;
-      color: $text-color-secondary;
-      margin: 4px 0 0 0;
-    }
-
-    .settings-group {
-      margin-top: 12px;
-    }
-
-    .settings-btn {
-      background: $surface-color;
-      color: $text-color;
-      border-radius: 8px;
-      padding: 6px 14px;
-      text-decoration: none;
-      font-weight: 500;
-      display: inline-block;
-
-      &:hover {
-        filter: brightness(1.2);
-      }
-    }
+  .email {
+    font-size: 0.95rem;
+    color: $text-sub;
+    margin-bottom: 8px;
   }
 
-  /* Tabs */
-  .profile-tabs {
-    display: flex;
-    gap: 10px;
-    border-bottom: 1px solid $surface-color;
+  .settings-btn {
+    margin-top: 16px;
+    background: #252525;
+    border: 1px solid #3a3a3a;
+    padding: 8px 16px;
+    border-radius: 8px;
+    color: $text-main;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.2s;
 
-    button {
-      background: none;
-      border: none;
-      color: $text-color-secondary;
-      padding: 16px 10px;
-      font-size: 1rem;
-      font-weight: 500;
-      cursor: pointer;
-
-      &.active {
-        color: $text-color;
-        font-weight: 600;
-        // Đường viền active
-        box-shadow: 0px 2px 0px $text-color;
-      }
-
-      &:hover {
-        color: $text-color;
-      }
+    &:hover {
+      background: #333;
     }
   }
+}
 
-  /* Content */
-  .profile-content {
-    padding-top: 40px;
+/* ================================================================
+   TABS — Custom UICommons Style
+================================================================ */
+
+.react-tabs__tab-list {
+  display: flex;
+  border-bottom: 1px solid #2b2b2b !important;
+  margin-bottom: 24px !important;
+  padding-left: 0;
+}
+
+.react-tabs__tab {
+  padding: 12px 20px !important;
+  color: $text-sub !important;
+  cursor: pointer;
+  font-weight: 500;
+  background: none !important;
+  border: none !important;
+  transition: 0.2s ease;
+
+  &:hover {
+    color: $text-main !important;
+  }
+}
+
+.react-tabs__tab--selected {
+  color: $accent !important;
+  font-weight: 600 !important;
+  border-bottom: 2px solid $accent !important;
+}
+
+/* Remove default outline */
+.react-tabs__tab:focus {
+  box-shadow: none !important;
+}
+
+/* ================================================================
+   GRID — Post Cards
+================================================================ */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+.card {
+  background: $bg-card;
+  border: 1px solid #2a2a2a;
+  border-radius: 14px;
+  overflow: hidden;
+  text-decoration: none;
+  color: $text-main;
+  transition: all 0.25s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0px 10px 22px rgba(0, 0, 0, 0.45);
+    border-color: #3f3f3f;
+  }
+}
+
+.card-info {
+  padding: 14px 16px;
+
+  h3 {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 600;
   }
 
-  /* Lưới bài đăng */
-  .post-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 20px;
+  .post-date {
+    font-size: 0.85rem;
+    color: $text-faded;
+    margin-top: 4px;
+  }
+}
 
-    .post-card {
-      background: $surface-color;
-      border-radius: 8px;
-      overflow: hidden;
-      transition: transform 0.2s; 
+/* ================================================================
+   EMPTY STATE — Cute + Minimalist
+================================================================ */
 
-      &:hover {
-        transform: scale(1.05);
-      }
+.empty-state {
+  text-align: center;
+  margin-top: 50px;
+  color: $text-sub;
+  animation: fadeIn 0.3s ease;
 
-      img {
-        width: 100%;
-        height: 180px;
-        object-fit: cover;
-        display: block;
-      }
-
-      h3 {
-        padding: 12px 16px;
-        margin: 0;
-        font-size: 1rem;
-      }
-
-      .post-date
-      {
-        padding: 0 16px 12px;
-        margin: 0;
-        font-size: 0.9rem;
-        color: $text-color-secondary;
-      }
-    }
+  .empty-icon {
+    font-size: 4rem;
+    margin-bottom: 12px;
+    color: #444;
+    opacity: 0.7;
   }
 
-  /* Trạng thái rỗng */
-  .empty-state {
-    margin-top: 50px;
-    text-align: center;
-    color: $text-color-secondary;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  h2 {
+    color: $text-main;
+    margin-bottom: 6px;
+  }
 
-    .empty-icon {
-      font-size: 5rem;
-      color: #444; // Màu xám đậm cho icon
-      font-weight: bold;
-      line-height: 1;
-      margin-bottom: 10px;
-    }
+  p {
+    max-width: 360px;
+    margin: 6px auto 16px;
+    line-height: 1.6;
+    color: $text-faded;
+  }
 
-    h2 {
-      font-size: 1.3rem;
-      color: $text-color;
-      font-weight: 600;
-      margin: 0;
-    }
+  .create-btn {
+    margin-top: 12px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    background: $accent;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    color: #fff;
+    box-shadow: 0px 4px 12px rgba(123, 92, 255, 0.4);
+    transition: 0.25s ease;
 
-    p {
-      color: $text-color-secondary;
-      max-width: 400px;
-      margin: 10px 0 0 0;
-      line-height: 1.5;
-    }
-
-    .create-btn {
-      margin-top: 20px;
-      padding: 12px 24px;
-      border: none;
-      border-radius: 8px;
-      color: $text-color;
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: 600;
-
-      &:hover {
-        filter: brightness(1.2);
-      }
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0px 6px 18px rgba(123, 92, 255, 0.55);
     }
   }
-  // loading
-  .profile-loading, .profile-error {
-    text-align: center;
-    margin-top: 100px;
-    font-size: 1.2rem;
-    color: $text-color-secondary;
+}
+
+/* ================================================================
+   LOADING / ERROR
+================================================================ */
+
+.profile-loading,
+.profile-error {
+  margin-top: 120px;
+  text-align: center;
+  font-size: 1.1rem;
+  color: $text-sub;
+}
+
+/* ================================================================
+   ANIMATIONS
+================================================================ */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

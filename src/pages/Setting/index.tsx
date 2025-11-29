@@ -240,7 +240,10 @@ const SettingProfile = () => {
 
   return (
     <div className="spgRoot">
-      <aside className="spgSidebar">
+      <aside
+        className="spgSidebar"
+        style={{ background: "black", paddingTop: "50px" }}
+      >
         <div className="spgSettingsTitle">Settings</div>
         <nav className="spgMenu">
           {menuItems.map((item) => {

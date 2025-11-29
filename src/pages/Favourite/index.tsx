@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./style.scss";
 import ElementPreview from "../../components/ElementPreview";
+import { FiBookmark } from "react-icons/fi";
 
 interface IAuthor {
   username: string;
@@ -67,7 +68,9 @@ const FavouritePage = () => {
                 </div>
                 <div className="fav-stats">
                   <span>{el.viewsCount?.toLocaleString() || 0} views</span>
-                  <span>⭐ {el.favouritesCount || 0}</span>
+                  <span className="favorite">
+                    <FiBookmark /> {el.favouritesCount || 0}
+                  </span>
                 </div>
               </div>
             </div>

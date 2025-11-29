@@ -1,190 +1,260 @@
+/* ===========================================================
+   SETTINGS UI — Minimal Dark Mode (GitHub + Vercel style)
+=========================================================== */
+
+:root {
+  --bg-main: #000;
+  --bg-sidebar: #0d0d0d;
+  --border-color: #222;
+  --text-main: #fff;
+  --text-muted: #b5b5b5;
+  --input-bg: #0f0f0f;
+  --input-border: #333;
+  --input-focus: #4a4a4a;
+  --btn-primary: #6f4dfc;
+  --btn-primary-hover: #7f62ff;
+}
+
+/* ROOT LAYOUT */
 .spgRoot {
   display: flex;
   min-height: 100vh;
-  background: #0a1220;
-  color: #fff;
-  padding-top: 70px;
+  background: black;
+  color: var(--text-main);
 }
+
+/* SIDEBAR */
+/* ===== Sidebar (UICommons style) ===== */
 .spgSidebar {
-  width: 258px;
-  background: #162032;
-  padding: 30px 0 0 0;
+  width: 260px;
+  background: black;
+  border-right: 1px solid #1f242d;
+  padding: 28px 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
-}
-.spgSettingsTitle {
-  font-size: 1.23rem;
-  font-weight: bold;
-  margin-bottom: 22px;
-  color: #e5eaff;
-}
-.spgMenu {
-  width: 100%;
-}
-.spgMenuItem {
-  width: 92%;
-  display: flex;
-  align-items: center;
   gap: 15px;
-  padding: 13px 15px;
-  border-radius: 10px;
-  cursor: pointer;
-  color: #e5eaff;
-  font-size: 1.06rem;
-  margin-bottom: 7px;
-  transition: background 0.18s;
+  padding-top: 50px;
 }
-.spgMenuItem:hover {
-  background: #212e47;
-  color: #7ce6fd;
+
+.spgSettingsTitle {
+  font-size: 1.3rem;
+  font-weight: 700;
+  padding-left: 26px;
+  color: #e7e9f0;
+  margin-bottom: 6px;
 }
-.spgMenuIcon {
-  font-size: 1.25em;
-  min-width: 21px;
+
+.spgMenu {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0 10px;
 }
-// Style cho Link navigation
-a.spgMenuItem {
-  text-decoration: none;
-  color: inherit;
+
+.spgMenuItem {
   display: flex;
   align-items: center;
+  gap: 14px;
+  padding: 12px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #c7c9d3;
+  font-size: 0.98rem;
+  transition: 0.23s ease;
+  text-decoration: none;
+}
+
+.spgMenuItem:hover {
+  background: #1b1f27;
+  color: #8ecaed;
 }
 
 .spgMenuItemActive {
-  background: #212e47 !important;
-  color: #7ce6fd !important;
+  background: #1e2430;
+  color: #6ed3ff;
+  font-weight: 600;
+  border: 1px solid #2a3342;
 }
+
+.spgMenuIcon {
+  font-size: 1.15rem;
+  opacity: 0.9;
+}
+
+/* MENU ITEMS */
+.spgMenu {
+  padding: 0;
+}
+
+a.spgMenuItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 18px;
+  text-decoration: none;
+  color: var(--text-muted);
+  border-radius: 6px;
+  font-size: 0.95rem;
+  margin: 4px 6px;
+  transition: 0.2s;
+
+  &:hover {
+    background: #111;
+    color: var(--text-main);
+  }
+}
+
+.spgMenuItemActive {
+  background: #111;
+  color: #fff !important;
+  font-weight: 600;
+}
+
+/* MAIN CONTENT */
 .spgMain {
+  flex: 1;
+  padding: 40px 60px;
+}
+
+/* HEADER */
+.spgHeader {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.spgHint {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin-bottom: 40px;
+}
+
+/* FORM */
+.spgForm {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ROWS */
+.spgRow {
+  display: flex;
+  gap: 24px;
+}
+
+/* FIELDS */
+.spgField,
+.spgFieldFull {
   flex: 1;
   display: flex;
   flex-direction: column;
-  min-width: 0;
-  padding: 36px 36px 0 42px;
+  gap: 6px;
 }
-.spgHeader {
-  font-size: 1.67rem;
-  font-weight: bold;
-  margin-bottom: 6px;
-}
-.spgHint {
-  font-size: 0.99rem;
-  margin-bottom: 35px;
-  color: #b3b9c4;
-}
-.spgForm {
-  max-width: 900px;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 17px;
-}
-.spgRow {
-  display: flex;
-  gap: 18px;
-  width: 100%;
-}
-.spgField,
+
 .spgFieldFull {
-  flex: 1 1 50%;
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
+  flex: 100%;
 }
-.spgFieldFull {
-  flex: 1 1 100%;
-}
-.spgField label,
-.spgFieldFull label {
-  font-size: 1.01rem;
+
+label {
+  color: var(--text-main);
+  font-size: 0.92rem;
+  font-weight: 500;
   display: flex;
   align-items: center;
   gap: 6px;
-  margin-bottom: 2px;
-}
-.spgFieldIcon {
-  font-size: 1.1em;
-}
-input[type="text"],
-textarea {
-  background: #162032;
-  border: 1.4px solid #25304a;
-  border-radius: 8px;
-  padding: 10px 14px;
-  font-size: 1rem;
-  color: #fff;
-  margin-bottom: 2px;
-}
-input:focus,
-textarea:focus {
-  border: 1.3px solid #7ce6fd;
-  outline: none;
-}
-textarea {
-  resize: vertical;
-  min-height: 60px;
-}
-.spgFooter {
-  background: #121a2a;
-  color: #b3b9c4;
-  margin-left: -258px;
-  width: 100vw;
-  padding: 32px 0 25px 0;
-}
-.spgFooterWrap {
-  max-width: 1280px;
-  margin: 0 auto;
-  display: flex;
-  gap: 36px;
-}
-.spgFooterCol {
-  flex: 1 1 0;
-}
-.spgUiverse {
-  font-weight: bold;
-  font-size: 1.19rem;
-  margin-bottom: 9px;
-}
-.spgBrandBlue {
-  color: #2796fd;
-}
-.spgUiverseSub {
-  font-size: 1rem;
-  color: #b3e4ff;
-  margin-bottom: 7px;
-}
-.spgFooterCol ul {
-  list-style: none;
-  padding: 0;
-  margin: 8px 0 0 0;
-}
-.spgFooterCol li {
-  margin-bottom: 6px;
-}
-.spgFooterCol a {
-  color: #70e5ff;
-  text-decoration: underline;
 }
 
-@media (max-width: 1100px) {
-  .spgFooterWrap {
-    flex-direction: column;
-    gap: 16px;
+/* INPUTS */
+input[type="text"],
+textarea {
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  padding: 12px 14px;
+  font-size: 0.95rem;
+  color: var(--text-main);
+  border-radius: 6px;
+  transition: 0.15s;
+
+  &::placeholder {
+    color: #666;
+  }
+
+  &:focus {
+    border-color: var(--input-focus);
+    outline: none;
   }
 }
-@media (max-width: 800px) {
+
+textarea {
+  min-height: 140px;
+  resize: vertical;
+}
+
+/* BUTTON GROUP */
+.spgRow:last-child {
+  margin-top: 20px;
+  justify-content: flex-end;
+}
+
+/* BUTTONS */
+button[type="submit"] {
+  padding: 10px 22px;
+  background: var(--btn-primary);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.15s;
+
+  &:hover {
+    background: var(--btn-primary-hover);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.cancel-btn {
+  background: none !important;
+  border: 1px solid var(--input-border);
+  color: var(--text-muted);
+  padding: 10px 22px;
+  border-radius: 6px;
+  margin-right: 12px;
+
+  &:hover {
+    color: #fff;
+    background: #111;
+  }
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
   .spgRoot {
     flex-direction: column;
   }
+
   .spgSidebar {
-    flex-direction: row;
-    width: 100vw;
-    min-height: unset;
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    overflow-x: auto;
   }
+
+  a.spgMenuItem {
+    min-width: 140px;
+    justify-content: center;
+  }
+
   .spgMain {
-    padding: 28px 10px 0 10px;
+    padding: 20px;
   }
-  .spgFooter {
-    margin-left: 0;
+
+  .spgRow {
+    flex-direction: column;
   }
 }

@@ -2,6 +2,7 @@ import { useEffect, useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import ElementPreview from "../../components/ElementPreview";
 import "./style.scss";
+import { FiBookmark } from "react-icons/fi";
 
 const API_BASE = "http://localhost:3000";
 
@@ -131,7 +132,9 @@ const Spotlight = () => {
                   <strong>{author}</strong>
                   <div className="spotlight__stats">
                     <span>{formatNumber(views)} views</span>
-                    <span>⭐ {formatNumber(favs)}</span>
+                    <span>
+                      <FiBookmark /> {formatNumber(favs)}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -180,7 +183,7 @@ const Spotlight = () => {
                         {postCount} posts
                       </p>
                       <p className="spotlight__creator-score">
-                        {isFav && "⭐ "}
+                        {isFav && " "}
                         {scoreDisplay}
                         {tab !== "views" && ` Favorite`}
                       </p>

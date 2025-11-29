@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import ElementDetail from "./pages/Detail";
 import Home from "./pages/Home";
 import Navbar from "./components/Navbar";
@@ -23,6 +23,9 @@ import AdminChallenges from "./pages/AdminChallenges";
 import CreateChallengeEntry from "./pages/CreateChallengeEntry";
 import AdminUsers from "./pages/AdminUsers";
 
+import SidebarLayout from "./components/SidebarLayout";
+import Footer from "./components/Footer";
+
 function App() {
   return (
     <Suspense fallback={<div>Loading page...</div>}>
@@ -30,9 +33,6 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/favourite" element={<FavouritePage />} />
-        <Route path="/elements" element={<Elements />} />
 
         <Route path="/elements/new" element={<AddElement mode="add" />} />
 
@@ -42,6 +42,15 @@ function App() {
 
         <Route path="/login/success" element={<LoginSuccess />} />
 
+        <Route element={<SidebarLayout />}>
+          <Route path="/elements/:category" element={<Elements />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/favourite" element={<FavouritePage />} />
+        </Route>
+        <Route
+          path="/elements"
+          element={<Navigate to="/elements/all" replace />}
+        />
         <Route path="/settings" element={<SettingProfile />}>
           <Route index element={<Profile />} />
           <Route path="account" element={<AccountSettings />} />
@@ -53,9 +62,9 @@ function App() {
         <Route path="/spotlight" element={<Spotlight />} />
         <Route path="/challenges" element={<Challenges />} />
         <Route path="/challenges/:id" element={<ChallengeDetail />} />
-        <Route 
-          path="/challenges/:challengeId/create-entry" 
-          element={<CreateChallengeEntry />} 
+        <Route
+          path="/challenges/:challengeId/create-entry"
+          element={<CreateChallengeEntry />}
         />
         <Route
           path="/admin"
@@ -66,26 +75,27 @@ function App() {
           }
         />
 
-        <Route 
-          path="/admin/users" 
+        <Route
+          path="/admin/users"
           element={
             <AdminRoute>
-            <AdminUsers />
+              <AdminUsers />
             </AdminRoute>
-          } 
+          }
         />
 
-        <Route 
-          path="/admin/challenges" 
+        <Route
+          path="/admin/challenges"
           element={
             <AdminRoute>
               <AdminChallenges />
             </AdminRoute>
-          } 
+          }
         />
 
         <Route path="*" element={<div>404 Not Found</div>} />
       </Routes>
+      <Footer />
     </Suspense>
   );
 }
