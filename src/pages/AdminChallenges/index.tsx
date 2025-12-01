@@ -86,21 +86,21 @@ const AdminChallenges = () => {
       });
 
       if (res.ok) {
-        alert("Challenge created successfully!");
+        alert("Thử thách tạo thành công!");
         setShowCreateModal(false);
         fetchChallenges();
         resetForm();
       } else {
-        alert("Failed to create challenge");
+        alert("Thất bại tạo thử thách");
       }
     } catch (error) {
       console.error("Error creating challenge:", error);
-      alert("Failed to create challenge");
+      alert("Thất bại tạo thử thách");
     }
   };
 
   const handleDeleteChallenge = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this challenge?")) return;
+    if (!confirm("Bạn có chắc muốn xóa thử thách này?")) return;
 
     try {
       const res = await fetch(`http://localhost:3000/challenges/${id}`, {
@@ -111,7 +111,7 @@ const AdminChallenges = () => {
       });
 
       if (res.ok) {
-        alert("Challenge deleted successfully!");
+        alert("Thử thách được xóa thành công!");
         fetchChallenges();
       }
     } catch (error) {
@@ -120,7 +120,7 @@ const AdminChallenges = () => {
   };
 
   const handleFinalizeChallenge = async (id: string) => {
-    if (!confirm("Finalize this challenge and select winners?")) return;
+    if (!confirm("Kết thúc thử thách này và chọn người chiến thắng?")) return;
 
     try {
       const res = await fetch(`http://localhost:3000/challenges/${id}/finalize`, {
@@ -190,7 +190,7 @@ const AdminChallenges = () => {
   return (
     <div className="admin-challenges">
       <div className="admin-challenges__header">
-        <h1>🏆 Manage Challenges</h1>
+        <h1>🏆 Quản Lý Thử Thách</h1>
         <button
           className="btn-create"
           onClick={() => setShowCreateModal(true)}

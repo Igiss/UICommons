@@ -11,7 +11,7 @@ export default function Footer() {
             <span className="uiverse">UI</span>commons
           </h2>
 
-          <p className="footer-desc">UiCommons | The universe of UI</p>
+          <p className="footer-desc">UiCommons | Thế giới UI</p>
 
           <div className="footer-license">
             <p>

@@ -64,15 +64,15 @@ const AdminPage = () => {
   };
 
   if (loading)
-    return <div className="review-dashboard__loading">Loading...</div>;
+    return <div className="review-dashboard__loading">Đang tải...</div>;
 
   return (
     <div className="review-dashboard">
-      <h1 className="review-dashboard__title">🧾 Elements in Review</h1>
+      <h1 className="review-dashboard__title">🧾 Thành phân đang được đánh giá</h1>
 
       {reviewList.length === 0 ? (
         <p className="review-dashboard__empty-message">
-          No components awaiting review 🎉
+          Không có thành phần đang đợi 🎉
         </p>
       ) : (
         <div className="review-dashboard__list">
@@ -105,13 +105,13 @@ const AdminPage = () => {
                     className="review-card__action review-card__action--approve"
                     onClick={() => handleUpdate(el._id, "public")}
                   >
-                    ✅ Approve
+                    ✅ Đồng ý
                   </button>
                   <button
                     className="review-card__action review-card__action--reject"
                     onClick={() => handleUpdate(el._id, "rejected")}
                   >
-                    ❌ Reject
+                    ❌ Từ chối
                   </button>
                 </div>
               </div>

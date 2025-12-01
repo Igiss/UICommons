@@ -79,25 +79,25 @@ const Challenges = () => {
     <div className="challenges">
       {/* Hero Section */}
       <section className="challenges-hero">
-        <div className="challenges-hero__badge">🏆 SHOWCASE YOUR SKILLS</div>
-        <h1 className="challenges-hero__title">UI Design Challenges</h1>
+        <div className="challenges-hero__badge">🏆 THỂ HIỆN TRÌNH ĐỘ CỦA BẠN</div>
+        <h1 className="challenges-hero__title">Thử Thách Thiết Kế UI</h1>
         <p className="challenges-hero__subtitle">
-          Compete with your CSS & Tailwind skills, get rated by reviewers,
+          Cạnh tranh bằng kỹ năng CSS & Tailwinds của bạn, được đánh giá bởi ban giám khảo
           <br />
-          and win points to climb the leaderboard!
+          và tích điểm để lên bảng xếp hạng!
         </p>
       </section>
 
       {/* Active Challenges */}
       <section className="challenges-section">
         <div className="challenges-section__header">
-          <h2>Active Challenges</h2>
+          <h2>Thử Thách Đang Hoạt Động</h2>
           <span className="challenges-count">{activeChallenges.length}</span>
         </div>
 
         {activeChallenges.length === 0 ? (
           <div className="challenges-empty">
-            <p>No active challenges at the moment. Check back soon! 🚀</p>
+            <p>Không có thử thách bây giờ. Hãy quay lại sau 🚀</p>
           </div>
         ) : (
           <div className="challenges-grid">
@@ -118,9 +118,9 @@ const Challenges = () => {
                   />
                   <div className="challenge-card__status">
                     {challenge.status === "upcoming" ? (
-                      <span className="badge badge--upcoming">Upcoming</span>
+                      <span className="badge badge--upcoming">Sắp tới</span>
                     ) : (
-                      <span className="badge badge--active">Active</span>
+                      <span className="badge badge--active">Đang hoạt động</span>
                     )}
                   </div>
                 </div>
@@ -138,12 +138,12 @@ const Challenges = () => {
                     </div>
                     <div className="challenge-card__submissions">
                       <span className="icon">👥</span>
-                      <span>{challenge.submissionsCount} entries</span>
+                      <span>{challenge.submissionsCount} người tham gia</span>
                     </div>
                   </div>
 
                   <div className="challenge-card__prizes">
-                    <span className="prize-label">Prizes:</span>
+                    <span className="prize-label">Giải thưởng:</span>
                     <div className="prize-amounts">
                       <span className="prize prize--first">
                         🥇 {challenge.firstPrize}
@@ -158,7 +158,7 @@ const Challenges = () => {
                   </div>
 
                   <button className="challenge-card__cta">
-                    Enter Challenge →
+                    Tham Gia Thử Thách →
                   </button>
                 </div>
               </div>
@@ -170,13 +170,13 @@ const Challenges = () => {
       {/* Previous Challenges */}
       <section className="challenges-section">
         <div className="challenges-section__header">
-          <h2>Previous Challenges</h2>
+          <h2>Những Thử Thách Trước</h2>
           <span className="challenges-count">{previousChallenges.length}</span>
         </div>
 
         {previousChallenges.length === 0 ? (
           <div className="challenges-empty">
-            <p>No previous challenges yet.</p>
+            <p>Chưa có thử thách trước đó.</p>
           </div>
         ) : (
           <div className="challenges-grid challenges-grid--compact">
@@ -196,7 +196,7 @@ const Challenges = () => {
                     }}
                   />
                   <div className="challenge-card__status">
-                    <span className="badge badge--completed">Completed</span>
+                    <span className="badge badge--completed">Đã hoàn thành</span>
                   </div>
                 </div>
 
@@ -207,11 +207,11 @@ const Challenges = () => {
                       {formatDate(challenge.endDate)}
                     </span>
                     <span className="challenge-card__submissions">
-                      {challenge.submissionsCount} entries
+                      {challenge.submissionsCount} người tham gia
                     </span>
                   </div>
                   <button className="challenge-card__cta challenge-card__cta--secondary">
-                    View Winners →
+                    Xem Người Thắng Cuộc →
                   </button>
                 </div>
               </div>

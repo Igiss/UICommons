@@ -43,24 +43,24 @@ const Home = () => {
   return (
     <div className="home">
       <section className="hero">
-        <p className="hero-badge">🚀 9 NEW ELEMENTS THIS WEEK!</p>
+        <p className="hero-badge">🚀 3 THÀNH PHẦN MỚI TUẦN NÀY!</p>
         <h1 className="hero-title">
-          The Largest Library <br /> of Open-Source UI
+          Thư Viện Mã Nguồn Mở Lớn Nhất<br /> Cho UI
         </h1>
         <p className="hero-subtitle">
-          Community-built library of UI elements.
+          Thư viện UI được tạo bởi cộng đồng
           <br />
-          Copy as HTML/CSS, Tailwind, React and Figma.
+          Lưu lại HTML/CSS, Tailwind, React và Figma.
         </p>
 
         <div className="hero-search">
           <input
             type="text"
-            placeholder="Search for components, styles, creators..."
+            placeholder="Tìm kiếm thành phần, người dùng..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          <button>Search</button>
+          <button>Tìm kiếm</button>
         </div>
       </section>
 
@@ -68,7 +68,7 @@ const Home = () => {
         {filtered.map((el) => (
           <Link to={`/element/${el._id}`} key={el._id} className="card">
             <ElementPreview htmlCode={el.htmlCode} cssCode={el.cssCode} />
-            <span className="card-copy">{"</>"} Get code</span>
+            <span className="card-copy">{"</>"} Lấy code</span>
           </Link>
         ))}
       </div>

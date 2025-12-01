@@ -73,20 +73,20 @@ const AdminUsers = () => {
       });
 
       if (res.ok) {
-        alert(`User promoted to ${role} successfully!`);
+        alert(`Người dùng được thăng hạng lên ${role} thành công!`);
         fetchUsers();
       } else {
         const error = await res.json();
-        alert(error.message || "Failed to promote user");
+        alert(error.message || "Không thể lên chức người dùng");
       }
     } catch (error) {
       console.error("Error promoting user:", error);
-      alert("Failed to promote user");
+      alert("Không thể lên chức người dùng");
     }
   };
 
   const handleDemoteUser = async (userId: string) => {
-    if (!confirm("Demote this user back to regular user?")) return;
+    if (!confirm("Xuống chức người dùng này?")) return;
 
     const token = localStorage.getItem("authToken");
     
@@ -99,15 +99,15 @@ const AdminUsers = () => {
       });
 
       if (res.ok) {
-        alert("User demoted successfully!");
+        alert("Người dùng được xuống chức thành công!");
         fetchUsers();
       } else {
         const error = await res.json();
-        alert(error.message || "Failed to demote user");
+        alert(error.message || "Thất bại xuống chức");
       }
     } catch (error) {
       console.error("Error demoting user:", error);
-      alert("Failed to demote user");
+      alert("Thất bại xuống chức");
     }
   };
 
@@ -169,10 +169,10 @@ const AdminUsers = () => {
   return (
     <div className="admin-users">
       <div className="admin-users__header">
-        <h1>👥 User Management</h1>
+        <h1>👥 Quản lý người dùng</h1>
         <div className="admin-users__stats">
           <div className="stat-card">
-            <span className="stat-label">Total Users</span>
+            <span className="stat-label">Toàn bộ người dùng</span>
             <span className="stat-value">{allUsers.length}</span>
           </div>
           <div className="stat-card">
@@ -180,7 +180,7 @@ const AdminUsers = () => {
             <span className="stat-value">{reviewers.length}</span>
           </div>
           <div className="stat-card">
-            <span className="stat-label">Eligible</span>
+            <span className="stat-label">Có thể thăng chức</span>
             <span className="stat-value">{eligibleUsers.length}</span>
           </div>
         </div>
@@ -212,7 +212,7 @@ const AdminUsers = () => {
       <div className="admin-users__search">
         <input
           type="text"
-          placeholder="🔍 Search by name or email..."
+          placeholder="🔍 Tìm kiếm bằng tên hoặc email..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
@@ -259,13 +259,13 @@ const AdminUsers = () => {
                       className="btn btn--reviewer"
                       onClick={() => handlePromoteUser(user._id, "reviewer")}
                     >
-                      ⭐ Make Reviewer
+                      ⭐ Làm Reviewer
                     </button>
                     <button
                       className="btn btn--moderator"
                       onClick={() => handlePromoteUser(user._id, "moderator")}
                     >
-                      🛡️ Make Moderator
+                      🛡️ Làm Moderator
                     </button>
                   </>
                 )}
@@ -277,20 +277,20 @@ const AdminUsers = () => {
                         className="btn btn--moderator"
                         onClick={() => handlePromoteUser(user._id, "moderator")}
                       >
-                        🛡️ Promote to Moderator
+                        🛡️ Thăng chức lên Moderator
                       </button>
                     )}
                     <button
                       className="btn btn--demote"
                       onClick={() => handleDemoteUser(user._id)}
                     >
-                      ⬇️ Demote to User
+                      ⬇️ Xuống chức về User
                     </button>
                   </>
                 )}
 
                 {user.role === "admin" && (
-                  <span className="admin-badge">Cannot modify admin</span>
+                  <span className="admin-badge">Không thể ảnh hưởng admin</span>
                 )}
               </div>
             </div>

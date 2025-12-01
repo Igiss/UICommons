@@ -136,7 +136,7 @@ const ChallengeDetail = () => {
 
   const handleEnterChallenge = async () => {
     if (!isLoggedIn) {
-      alert("Please login to enter challenges");
+      alert("Đăng nhập để tham gia thử thách");
       navigate("/login");
       return;
     }
@@ -157,7 +157,7 @@ const ChallengeDetail = () => {
 
   const handleSubmit = async () => {
     if (!selectedComponent) {
-      alert("Please select a component");
+      alert("Chọn một thành phần");
       return;
     }
 
@@ -176,16 +176,16 @@ const ChallengeDetail = () => {
       });
 
       if (res.ok) {
-        alert("Successfully submitted to challenge!");
+        alert("Gửi thành phần đến thử thách thành công!");
         setShowSubmitModal(false);
         fetchChallengeData();
       } else {
         const error = await res.json();
-        alert(error.message || "Failed to submit");
+        alert(error.message || "Lỗi gửi thành phần");
       }
     } catch (error) {
       console.error("Error submitting:", error);
-      alert("Failed to submit");
+      alert("Lỗi gửi thành phần");
     } finally {
       setSubmitting(false);
     }
@@ -202,9 +202,9 @@ const ChallengeDetail = () => {
   if (!challenge) {
     return (
       <div className="challenge-detail-error">
-        <h2>Challenge not found</h2>
+        <h2>Thử thách không tìm thấy</h2>
         <button onClick={() => navigate("/challenges")}>
-          Back to Challenges
+          Quay về danh sách thử thách
         </button>
       </div>
     );
@@ -237,13 +237,13 @@ const ChallengeDetail = () => {
         <section className="challenge-info">
           <div className="challenge-info__main">
             <div className="challenge-info__description">
-              <h2>About this challenge</h2>
+              <h2>Về thử thách này</h2>
               <p>{challenge.description}</p>
             </div>
 
             {challenge.rules && challenge.rules.length > 0 && (
               <div className="challenge-info__rules">
-                <h3>📋 Rules</h3>
+                <h3>📋 Luật</h3>
                 <ul>
                   {challenge.rules.map((rule, index) => (
                     <li key={index}>{rule}</li>
@@ -253,7 +253,7 @@ const ChallengeDetail = () => {
             )}
 
             <div className="challenge-info__categories">
-              <h3>Allowed Categories</h3>
+              <h3>Danh mục cho phép</h3>
               <div className="category-tags">
                 {challenge.allowedCategories.map((cat) => (
                   <span key={cat} className="category-tag">
@@ -267,25 +267,25 @@ const ChallengeDetail = () => {
           <div className="challenge-info__sidebar">
             <div className="challenge-stats">
               <div className="stat">
-                <span className="stat-label">Start Date</span>
+                <span className="stat-label">Ngày bắt đầu</span>
                 <span className="stat-value">
                   {new Date(challenge.startDate).toLocaleDateString()}
                 </span>
               </div>
               <div className="stat">
-                <span className="stat-label">End Date</span>
+                <span className="stat-label">Ngày kết thúc</span>
                 <span className="stat-value">
                   {new Date(challenge.endDate).toLocaleDateString()}
                 </span>
               </div>
               <div className="stat">
-                <span className="stat-label">Entries</span>
+                <span className="stat-label">Người tham gia</span>
                 <span className="stat-value">{challenge.submissionsCount}</span>
               </div>
             </div>
 
             <div className="challenge-prizes">
-              <h3>🏆 Prizes</h3>
+              <h3>🏆 Giải thưởng</h3>
               <div className="prize-list">
                 <div className="prize-item prize-item--first">
                   <span className="prize-icon">🥇</span>
@@ -308,13 +308,13 @@ const ChallengeDetail = () => {
                   className="enter-challenge-btn enter-challenge-btn--primary"
                   onClick={() => navigate(`/challenges/${id}/create-entry`)}
                 >
-                  🎨 Create New Entry
+                  🎨 Tạo thành phần tham gia
                 </button>
                 <button
                   className="enter-challenge-btn enter-challenge-btn--secondary"
                   onClick={handleEnterChallenge}
                 >
-                  📦 Submit Existing Component
+                  📦 Gửi thành phần đã có
                 </button>
               </div>
             )}
@@ -322,11 +322,11 @@ const ChallengeDetail = () => {
             {canRateSubmissions && (
               <div className="reviewer-info">
                 <p className="reviewer-info__text">
-                  ⭐ You can rate submissions below
+                  ⭐ Bạn có thể đánh giá thành phần dưới đây
                 </p>
                 {challenge.status === 'active' && (
                   <p style={{ fontSize: '0.85rem', marginTop: '0.5rem', opacity: 0.8 }}>
-                    Rating window ends {new Date(new Date(challenge.endDate).getTime() + 3 * 24 * 60 * 60 * 1000).toLocaleDateString()}
+                    Đánh giá kết thúc vào {new Date(new Date(challenge.endDate).getTime() + 3 * 24 * 60 * 60 * 1000).toLocaleDateString()}
                   </p>
                 )}
               </div>
@@ -342,7 +342,7 @@ const ChallengeDetail = () => {
 
           {submissions.length === 0 ? (
             <div className="empty-leaderboard">
-              <p>No submissions yet. Be the first! 🚀</p>
+              <p>Chưa có người tham gia. Hãy là người đầu tiên 🚀</p>
             </div>
           ) : (
             <div className="leaderboard-grid">
@@ -390,13 +390,13 @@ const ChallengeDetail = () => {
                     {submission.ratingsCount > 0 && (
                       <div className="submission-score">
                         <div className="score-row">
-                          <span className="score-label">Total Score:</span>
+                          <span className="score-label">Tổng số điểm:</span>
                           <span className="score-value">
                             {submission.totalScore.toFixed(1)}
                           </span>
                         </div>
                         <div className="score-row">
-                          <span className="score-label">Avg Rating:</span>
+                          <span className="score-label">Điểm TB:</span>
                           <span className="score-average">
                             {submission.averageRating.toFixed(2)}/30
                           </span>
@@ -413,7 +413,7 @@ const ChallengeDetail = () => {
                     {submission.ratingsCount === 0 && challenge.status !== 'active' && (
                       <div className="submission-score">
                         <span className="score-pending">
-                          ⏳ Awaiting ratings
+                          ⏳ Đang đợi đánh giá
                         </span>
                       </div>
                     )}
@@ -425,7 +425,7 @@ const ChallengeDetail = () => {
                           setShowRatingModal(submission._id);
                         }}
                       >
-                        ⭐ Rate This
+                        ⭐ Đánh giá
                       </button>
                     )}
                   </div>
@@ -440,13 +440,13 @@ const ChallengeDetail = () => {
       {showSubmitModal && (
         <div className="modal-overlay" onClick={() => setShowSubmitModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <h2>Select a Component</h2>
-            <p>Choose one of your public components to submit</p>
+            <h2>Chọn thành phần</h2>
+            <p>Chọn một trong những thành phần công khai của bạn</p>
 
             <div className="component-select-grid">
               {userComponents.length === 0 ? (
                 <p className="no-components">
-                  You don't have any public components yet. Create one first!
+                  Bạn chưa có thành phần công khai nào cả. Hãy tạo cái đầu tiêm!
                 </p>
               ) : (
                 userComponents.map((comp) => (
@@ -469,14 +469,14 @@ const ChallengeDetail = () => {
                 className="btn btn--secondary"
                 onClick={() => setShowSubmitModal(false)}
               >
-                Cancel
+                Quay lại
               </button>
               <button
                 className="btn btn--primary"
                 onClick={handleSubmit}
                 disabled={!selectedComponent || submitting}
               >
-                {submitting ? "Submitting..." : "Submit"}
+                {submitting ? "Đang gửi..." : "Gửi"}
               </button>
             </div>
           </div>

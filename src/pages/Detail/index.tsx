@@ -413,7 +413,7 @@ const ElementDetail = () => {
             className="comment__reply-btn"
             onClick={() => setReplyingTo(comment._id)}
           >
-            Reply
+            Phản hồi
           </button>
         )}
 
@@ -430,13 +430,13 @@ const ElementDetail = () => {
                 onClick={() => handlePostReply(comment._id)}
                 className="btn-primary"
               >
-                Post Reply
+                Gửi phản hồi
               </button>
               <button
                 onClick={() => setReplyingTo(null)}
                 className="btn-secondary"
               >
-                Cancel
+                Hủy bỏ
               </button>
             </div>
           </div>
@@ -461,7 +461,7 @@ const ElementDetail = () => {
       {/* poster info */}
       <header className="detail-header">
         <Link to="/elements" className="back-btn">
-          ← Go back
+          ← Quay lại
         </Link>
 
         <div className="stats">
@@ -484,7 +484,7 @@ const ElementDetail = () => {
             </div>
           </div>
           <div className="stat">
-            👁️ <span>{viewsCount} views</span>
+            👁️ <span>{viewsCount} lượt xem</span>
           </div>
           <div className="stat" onClick={handleToggleFavourite}>
             <span
@@ -564,7 +564,7 @@ const ElementDetail = () => {
           <span style={{ color: isFavourite ? "#FFD700" : "#888" }}>
             {isFavourite ? "★" : "☆"}
           </span>
-          {isFavourite ? "Save to favourites" : "Save to favourites"}
+          {isFavourite ? "Lưu vào yêu thích" : "Lưu vào yêu thích"}
         </button>
 
         <div className="export-group">
@@ -592,7 +592,7 @@ const ElementDetail = () => {
               setShowExportPopup(true);
             }}
           >
-            ⚙️ Export
+            ⚙️ Xuất
           </button>
 
           <select
@@ -676,7 +676,7 @@ const ElementDetail = () => {
                 year: "numeric",
               })}
             </div>
-            <button className="sidebar-report">⚠️ Report</button>
+            <button className="sidebar-report">⚠️ Báo cáo</button>
           </div>
 
           <div className="sidebar-author">
@@ -698,7 +698,7 @@ const ElementDetail = () => {
 
           {/* Variation box */}
           <div className="sidebar-variations">
-            <p>No variations yet, create one!</p>
+            <p>Chưa có bản con, hãy tạo mới!</p>
           </div>
         </aside>
       </div>

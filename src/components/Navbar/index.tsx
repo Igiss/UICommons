@@ -80,13 +80,13 @@ const Navbar = () => {
       </Link>
       <ul className="menu">
         <li>
-          <Link to="/elements">Elements</Link>
+          <Link to="/elements">Yếu Tố</Link>
         </li>
         <li>
-          <Link to="/spotlight">Spotlight</Link>
+          <Link to="/spotlight">Nổi Bật</Link>
         </li>
         <li>
-          <Link to="/challenges">Challenges</Link>
+          <Link to="/challenges">Thử Thách</Link>
         </li>
       </ul>
 

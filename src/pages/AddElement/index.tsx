@@ -315,7 +315,7 @@ const AddElement = ({ mode }: { mode: PageMode }) => {
             disabled={isEdit}
           >
             <FiRefreshCw />
-            <span>Change type</span>
+            <span>Thay đổi loại</span>
           </button>
 
           <button
@@ -325,7 +325,7 @@ const AddElement = ({ mode }: { mode: PageMode }) => {
             onClick={(e) => handleSubmit(e, "draft")}
           >
             <FiSave />
-            <span>Save as draft</span>
+            <span>Lưu lại nháp</span>
           </button>
 
           <button
@@ -335,7 +335,7 @@ const AddElement = ({ mode }: { mode: PageMode }) => {
             disabled={isSubmitting}
           >
             <FiSend />
-            <span>{isSubmitting ? "Submitting..." : "Submit for review"}</span>
+            <span>{isSubmitting ? "Đang gửi..." : "Gửi cho đánh giá"}</span>
           </button>
         </div>
       )}

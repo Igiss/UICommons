@@ -173,7 +173,7 @@ const CreateChallengeEntry = () => {
     return (
       <div className="challenge-entry-error">
         <h2>Challenge not found</h2>
-        <button onClick={() => navigate("/challenges")}>Back to Challenges</button>
+        <button onClick={() => navigate("/challenges")}>Quay lại trang Thử Thách</button>
       </div>
     );
   }
@@ -181,10 +181,10 @@ const CreateChallengeEntry = () => {
   if (challenge.status !== "active") {
     return (
       <div className="challenge-entry-error">
-        <h2>This challenge is not currently accepting submissions</h2>
+        <h2>Thử thách này hiện tại chưa chấp nhận thí sinh</h2>
         <p>Status: {challenge.status}</p>
         <button onClick={() => navigate(`/challenges/${challengeId}`)}>
-          View Challenge
+          Xem Thử Thách
         </button>
       </div>
     );
@@ -195,14 +195,14 @@ const CreateChallengeEntry = () => {
       {/* Challenge Info Banner */}
       <div className="challenge-entry__banner">
         <div className="challenge-entry__info">
-          <h1>Create Entry for: {challenge.title}</h1>
+          <h1>Tạo tác phẩm: {challenge.title}</h1>
           <p>{challenge.description}</p>
           <div className="challenge-entry__meta">
             <span className="meta-item">
               ⏰ Deadline: {new Date(challenge.endDate).toLocaleDateString()}
             </span>
             <span className="meta-item">
-              📋 Categories: {challenge.allowedCategories.join(", ")}
+              📋 Danh mục: {challenge.allowedCategories.join(", ")}
             </span>
           </div>
         </div>
@@ -211,7 +211,7 @@ const CreateChallengeEntry = () => {
       {/* Rules Section */}
       {challenge.rules && challenge.rules.length > 0 && (
         <div className="challenge-entry__rules">
-          <h3>📋 Challenge Rules</h3>
+          <h3>📋 Luật lệ</h3>
           <ul>
             {challenge.rules.map((rule, index) => (
               <li key={index}>{rule}</li>
@@ -225,7 +225,7 @@ const CreateChallengeEntry = () => {
         {/* Left: Preview */}
         <div className="challenge-entry__preview">
           <div className="preview-header">
-            <h3>Preview</h3>
+            <h3>Xem trước</h3>
           </div>
           <iframe
             title="Preview"
@@ -239,7 +239,7 @@ const CreateChallengeEntry = () => {
           <form onSubmit={handleSubmit}>
             {/* Title Input */}
             <div className="form-group">
-              <label>Entry Title</label>
+              <label>Tên thành phần</label>
               <input
                 type="text"
                 value={title}
@@ -250,7 +250,7 @@ const CreateChallengeEntry = () => {
 
             {/* Category Selection */}
             <div className="form-group">
-              <label>Category *</label>
+              <label>Danh mục *</label>
               <div className="category-select">
                 {challenge.allowedCategories.map((cat) => (
                   <label key={cat} className="category-option">
@@ -325,7 +325,7 @@ const CreateChallengeEntry = () => {
                 className="btn btn--secondary"
                 onClick={() => navigate(`/challenges/${challengeId}`)}
               >
-                Cancel
+                Hủy bỏ
               </button>
               <button
                 type="submit"
@@ -334,7 +334,7 @@ const CreateChallengeEntry = () => {
               >
                 <FiSend />
                 <span>
-                  {isSubmitting ? "Submitting..." : "Submit to Challenge"}
+                  {isSubmitting ? "Đang gửi..." : "Gửi tới Thử thách"}
                 </span>
               </button>
             </div>

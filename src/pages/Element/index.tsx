@@ -64,14 +64,14 @@ const Elements = () => {
     <div className="elements-page">
       <div className="toolbar-header">
         <div className="theme-dropdown">
-          <span className="current-theme">Dark</span>
+          <span className="current-theme">Đen</span>
           <FiChevronDown className="dropdown-icon" />
         </div>
 
         <div className="search-wrapper">
           <input
             type="text"
-            placeholder="Search tags, users, posts..."
+            placeholder="Tìm kiếm tags, người dùng, bài đăng..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -95,7 +95,7 @@ const Elements = () => {
                   <strong>{el.accountId?.userName || "Unknown"}</strong>
                 </div>
                 <div className="stats">
-                  <span>{el.viewsCount?.toLocaleString() || 0} views</span>
+                  <span>{el.viewsCount?.toLocaleString() || 0} lượt xem</span>
                   <span>
                     <FiBookmark /> {el.favouritesCount || 0}
                   </span>
@@ -105,7 +105,7 @@ const Elements = () => {
           ))
         ) : (
           <div style={{ color: "#888", padding: "20px" }}>
-            No elements found for category "{category}".
+            Không tìm thấy thành phần cho danh mục "{category}".
           </div>
         )}
       </div>

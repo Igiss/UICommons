@@ -54,10 +54,10 @@ const Spotlight = () => {
   );
 
   const tabTitles: Record<TabKey, string> = {
-    weekly: "The most appreciated posts this week",
-    creators: "Our most active contributors",
-    favorites: "Creators with the most favorited elements",
-    views: "Creators with the most viewed elements",
+    weekly: "Những bài đăng được trân trọng nhất tuần này",
+    creators: "Tác giả cống hiến nhiều nhất",
+    favorites: "Tác giả với thành phần có nhiều lượt yêu thích nhất",
+    views: "Tác giả với thành phần có nhiều lượt xem nhất",
   };
 
   const isCreatorTab =
@@ -131,7 +131,7 @@ const Spotlight = () => {
                 <div className="spotlight__meta">
                   <strong>{author}</strong>
                   <div className="spotlight__stats">
-                    <span>{formatNumber(views)} views</span>
+                    <span>{formatNumber(views)} lượt xem</span>
                     <span>
                       <FiBookmark /> {formatNumber(favs)}
                     </span>
@@ -196,7 +196,7 @@ const Spotlight = () => {
         </div>
 
         <div className="spotlight__show-top">
-          <button className="spotlight__show-top-button">Show top 50</button>
+          <button className="spotlight__show-top-button">Top 50</button>
         </div>
       </>
     );
@@ -209,18 +209,18 @@ const Spotlight = () => {
 
   return (
     <div className="spotlight">
-      <h1 className="spotlight__title">Spotlight</h1>
+      <h1 className="spotlight__title">Nổi Bật</h1>
       <p className="spotlight__subtitle-main">
-        Celebrating our community's finest creators and their work
+      Tán dương những tác giả và thành phần xuất xắc nhất của cộng đồng.
       </p>
 
       <div className="spotlight__tabs">
         {(
           [
-            ["weekly", "Weekly Highlights"],
-            ["creators", "Top Creators"],
-            ["favorites", "Most Favorites"],
-            ["views", "Most Views"],
+            ["weekly", "Những Nổi Bật Hàng Tuần"],
+            ["creators", "Top Tác Giả"],
+            ["favorites", "Được Yêu Thích Nhất"],
+            ["views", "Có Nhiều Lượt Xem Nhất"],
           ] as [TabKey, string][]
         ).map(([key, label]) => (
           <button

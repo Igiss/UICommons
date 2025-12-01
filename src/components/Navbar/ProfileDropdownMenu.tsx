@@ -18,26 +18,26 @@ const ProfileDropdownMenu: React.FC<ProfileDropdownMenuProps> = ({
     <div className="profile-dropdown-menu">
       <ul>
         <li>
-          <Link to="/profile">Your Profile</Link>
+          <Link to="/profile">Hồ Sơ Của Bạn</Link>
         </li>
         <li>
-          <Link to="/favourite">Your Favorites</Link>
+          <Link to="/favourite">Yêu Thích</Link>
         </li>
         <li>
-          <Link to="/settings">Settings</Link>
+          <Link to="/settings">Cài Đặt</Link>
         </li>
 
         {/* Admin-only menu items */}
         {userRole === "admin" && (
           <>
             <li>
-              <Link to="/admin">Review Components</Link>
+              <Link to="/admin">Đánh Giá Thành Phần</Link>
             </li>
             <li>
-              <Link to="/admin/challenges">Manage Challenges</Link>
+              <Link to="/admin/challenges">Quản Lý Thử Thách</Link>
             </li>
             <li>
-              <Link to="/admin/users">Manage Users</Link>
+              <Link to="/admin/users">Quản Lý Người Dùng</Link>
             </li>
           </>
         )}
@@ -46,7 +46,7 @@ const ProfileDropdownMenu: React.FC<ProfileDropdownMenuProps> = ({
         {["reviewer", "moderator", "admin"].includes(userRole || "") && (
           <li>
             <Link to="/challenges">
-              <span className="reviewer-badge">⭐</span> Rate Challenges
+              <span className="reviewer-badge">⭐</span> Đánh Giá Thử Thách
             </Link>
           </li>
         )}
@@ -56,10 +56,10 @@ const ProfileDropdownMenu: React.FC<ProfileDropdownMenuProps> = ({
 
       <ul>
         <li>
-          <a href="#">Give feedback</a>
+          <a href="#">Đưa Phản Hồi</a>
         </li>
         <li>
-          <a href="#">Report bug</a>
+          <a href="#">Báo Cáo Lỗi</a>
         </li>
       </ul>
 
@@ -73,7 +73,7 @@ const ProfileDropdownMenu: React.FC<ProfileDropdownMenuProps> = ({
             rel="noopener noreferrer"
             className="discord-link"
           >
-            Join Discord
+            Tham Gia Discord
           </a>
         </li>
       </ul>
@@ -83,7 +83,7 @@ const ProfileDropdownMenu: React.FC<ProfileDropdownMenuProps> = ({
       <ul>
         <li>
           <button onClick={onLogout} className="logout-menu-btn">
-            Log out
+            Đăng Xuất
           </button>
         </li>
       </ul>

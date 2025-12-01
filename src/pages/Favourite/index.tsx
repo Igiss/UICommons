@@ -40,15 +40,15 @@ const FavouritePage = () => {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <div className="fav-loading">Loading favourites...</div>;
+  if (loading) return <div className="fav-loading">Đang tải yêu thích...</div>;
 
   return (
     <div className="favourites-page">
-      <h1 className="fav-title">My Favorites</h1>
+      <h1 className="fav-title">Yêu thích của tôi</h1>
 
       {favourites.length === 0 ? (
         <div className="empty-fav">
-          <p>You haven’t added any favourites yet.</p>
+          <p>Bạn chưa có thành phần yêu thích nào cả.</p>
         </div>
       ) : (
         <div className="fav-grid">
@@ -67,7 +67,7 @@ const FavouritePage = () => {
                   </strong>
                 </div>
                 <div className="fav-stats">
-                  <span>{el.viewsCount?.toLocaleString() || 0} views</span>
+                  <span>{el.viewsCount?.toLocaleString() || 0} lượt xem</span>
                   <span className="favorite">
                     <FiBookmark /> {el.favouritesCount || 0}
                   </span>
