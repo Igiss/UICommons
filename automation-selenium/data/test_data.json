@@ -1,0 +1,112 @@
+{
+  "elements": {
+    "TC_Element_001_005": {
+      "category": "Button",
+      "title": "CST Standard Button",
+      "html": "<button class='btn'>Click</button>",
+      "css": ".btn { background: blue; color: white; }",
+      "desc": "Create a standard button component"
+    },
+    "TC_Element_002_Preview": {
+      "initial_html": "<p>Hello</p>",
+      "updated_html": "<h1>Hello Automation</h1>",
+      "updated_css": "h1 { color: red; }"
+    },
+    "TC_Element_003_Invalid": {
+      "title": "Missing Category Test",
+      "html": "<div></div>",
+      "css": "div { display: block; }",
+      "expected_error": "Please select a category"
+    },
+    "TC_Element_028_XSS": [
+      {
+        "type": "Script in Title",
+        "title": "<script>alert('xss_title')</script>",
+        "html": "<div>Safe HTML</div>",
+        "css": "div { color: black; }"
+      },
+      {
+        "type": "Onerror in HTML",
+        "title": "Safe Title",
+        "html": "<img src=x onerror=alert('xss_html')>",
+        "css": "img { width: 100px; }"
+      }
+    ],
+    "TC_Element_026_Empty": {
+      "category": "Button",
+      "title": "Only Whitespace",
+      "html": "   ",
+      "css": "\t\n",
+      "expected_error": "Code cannot be empty"
+    },
+    "TC_Element_025_TitleSpaces": {
+      "category": "Button",
+      "title": "   ",
+      "html": "<button>Space Title</button>",
+      "css": "button { color: #111; }"
+    },
+    "TC_Element_029_Unicode": {
+      "category": "Button",
+      "title": "A\u0301\u0323 Test",
+      "html": "<custom-tag data-x='\\n\\t\\u003C'>\u1eb4</custom-tag>",
+      "css": ".x::before{content:\"\\ud83d\\ude00\\n\";}",
+      "expected_preview_text": "\u1eb4"
+    }
+  },
+  "comments": {
+    "TC_COMMENT_001": {
+      "content": "Automated comment at "
+    },
+    "TC_COMMENT_003_Invalid": [
+      {
+        "content": ""
+      },
+      {
+        "content": "     "
+      }
+    ],
+    "TC_COMMENT_005_Reply": {
+      "content": "Automated reply to first comment"
+    },
+    "TC_COMMENT_024_Boundary": {
+      "repeat_char": "A",
+      "repeat_count": 1001,
+      "max_allowed": 1000
+    },
+    "TC_COMMENT_021_Minimum": {
+      "content": "A",
+      "suffix_separator": ""
+    },
+    "TC_COMMENT_025_SpecialChars": {
+      "content": "@@@###\\n\\t\\u003Cscript\\u003E???",
+      "suffix_separator": "-"
+    },
+    "TC_COMMENT_026_Unicode": {
+      "content": "A\u0301\u0323 thử nghiệm ký tự tổ hợp"
+    }
+  },
+  "export": {
+    "TC_Element_001_Frameworks": [
+      "React",
+      "Vue",
+      "Svelte",
+      "Lit"
+    ],
+    "TC_Element_005_Copy": {
+      "success_msg": "Đã copy!",
+      "button_text_after": "copy"
+    }
+  },
+  "settings": {
+    "TC_PRF_001_Update": {
+      "display_name": "Automation Tester",
+      "bio": "I love Selenium and JSON Data",
+      "location": "Vietnam"
+    },
+    "TC_PRF_006_Multiline": {
+      "display_name": "Automation Tester",
+      "bio": "Dong 1\n\nDong 2\n\nDong 3",
+      "location": "Vietnam"
+    }
+  }
+}

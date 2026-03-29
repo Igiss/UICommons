@@ -1,0 +1,121 @@
+{
+  "elements": {
+    "TC_Element_002_Template_Button": {
+      "category": "button",
+      "expected_title": "Button",
+      "expected_preview_text": "Button"
+    },
+    "TC_Element_004_SaveDraft": {
+      "category": "button",
+      "title": "Draft Save Button",
+      "html": "<button class='draft-btn'>Draft Save</button>",
+      "css": ".draft-btn { background: #10b981; color: #fff; padding: 8px 14px; border: 0; border-radius: 6px; }",
+      "expected_redirect_fragment": "/elements/all"
+    },
+    "TC_Element_005_SubmitRedirect": {
+      "category": "button",
+      "title": "Review Submit Button",
+      "html": "<button class='review-btn'>Review Submit</button>",
+      "css": ".review-btn { background: #f59e0b; color: #111827; padding: 8px 14px; border: 0; border-radius: 6px; }",
+      "expected_redirect_fragment": "/elements/all"
+    },
+    "TC_Element_011_ChangeType": {
+      "initial_category": "button",
+      "changed_category": "checkbox",
+      "expected_changed_title": "Checkbox",
+      "expected_preview_text": "Check me"
+    },
+    "TC_Element_025_TitleSpaces": {
+      "category": "Button",
+      "title": "   ",
+      "html": "<button>Space Title</button>",
+      "css": "button { color: #111; }"
+    },
+    "TC_Element_029_Unicode": {
+      "category": "Button",
+      "title": "A\u0301\u0323 Test",
+      "html": "<custom-tag data-x='\\n\\t\\u003C'>\u1eb4</custom-tag>",
+      "css": ".x::before{content:\"\\ud83d\\ude00\\n\";}",
+      "expected_preview_text": "\u1eb4"
+    }
+  },
+  "comments": {
+    "TC_COMMENT_002_FilterByElement": {
+      "component_a": {
+        "title": "Filter Scope A",
+        "comment": "Visible scoped comment"
+      },
+      "component_b": {
+        "title": "Filter Scope B",
+        "comment": "Hidden scoped comment"
+      }
+    },
+    "TC_COMMENT_006_ReplyFormClose": {
+      "reply_content": "Reply form close check"
+    },
+    "TC_COMMENT_008_Order": {
+      "first_prefix": "Order first comment",
+      "second_prefix": "Order second comment"
+    },
+    "TC_COMMENT_021_Minimum": {
+      "content": "A",
+      "suffix_separator": ""
+    },
+    "TC_COMMENT_025_SpecialChars": {
+      "content": "@@@###\\n\\t\\u003Cscript\\u003E???",
+      "suffix_separator": "-"
+    },
+    "TC_COMMENT_026_Unicode": {
+      "content": "A\u0301\u0323 thử nghiệm ký tự tổ hợp",
+      "suffix_separator": " "
+    }
+  },
+  "settings": {
+    "TC_PRF_006_Multiline": {
+      "display_name": "Automation Tester",
+      "bio": "Dong 1\n\nDong 2\n\nDong 3",
+      "location": "Vietnam",
+      "success_keywords": [
+        "thành công",
+        "success"
+      ]
+    }
+  },
+  "export": {
+    "TC_Element_003_FrameworkCode": {
+      "title": "Export Framework Seed",
+      "category": "button",
+      "htmlCode": "<button class='framework-seed'>Seed</button>",
+      "cssCode": ".framework-seed { padding: 8px 12px; }",
+      "reactCode": "export default function ReactSeed(){ return <button>ReactSeed</button>; }",
+      "vueCode": "<template><button>VueSeed</button></template>",
+      "svelteCode": "<button>SvelteSeed</button>",
+      "litCode": "render(){ return html`<button>LitSeed</button>`; }",
+      "expected_react_fragment": "ReactSeed",
+      "expected_vue_fragment": "VueSeed"
+    },
+    "TC_Element_004_Fallback": {
+      "title": "Export Missing Lit",
+      "category": "button",
+      "htmlCode": "<button class='fallback-seed'>Fallback</button>",
+      "cssCode": ".fallback-seed { padding: 8px 12px; }",
+      "reactCode": "export default function FallbackSeed(){ return <button>FallbackSeed</button>; }",
+      "vueCode": "<template><button>FallbackSeed</button></template>",
+      "svelteCode": "<button>FallbackSeed</button>",
+      "litCode": "",
+      "expected_lit_fallback": "No Lit code available."
+    },
+    "TC_Element_006_CopyReset": {
+      "expected_immediate_fragment": "copy",
+      "expected_reset_fragment": "copy code",
+      "wait_ms": 1800
+    },
+    "TC_Element_002_PopupTitle": {
+      "framework": "Vue",
+      "expected_title_fragment": "VUE"
+    },
+    "TC_Element_010_Repeated": {
+      "loops": 3
+    }
+  }
+}

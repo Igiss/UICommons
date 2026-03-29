@@ -1,0 +1,6 @@
+{
+  "browser": "chrome",
+  "base_url": "http://localhost:5173",
+  "timeout_seconds": 20,
+  "headless": false
+}

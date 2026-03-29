@@ -1,0 +1,17 @@
+{
+  "cases": [
+    {
+      "test_id": "AUTH-LOGIN-001",
+      "title": "Login with valid credentials",
+      "priority": "high",
+      "tags": ["smoke", "auth"],
+      "data": {
+        "username": "qa_user",
+        "password": "change_me"
+      },
+      "expected": {
+        "redirect_path": "/home"
+      }
+    }
+  ]
+}

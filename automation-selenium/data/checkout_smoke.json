@@ -1,0 +1,17 @@
+{
+  "cases": [
+    {
+      "test_id": "CHK-001",
+      "title": "Checkout with one item",
+      "priority": "high",
+      "tags": ["smoke", "checkout"],
+      "data": {
+        "item_sku": "SKU001",
+        "quantity": 1
+      },
+      "expected": {
+        "order_created": true
+      }
+    }
+  ]
+}

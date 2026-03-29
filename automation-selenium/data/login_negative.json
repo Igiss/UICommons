@@ -1,0 +1,17 @@
+{
+  "cases": [
+    {
+      "test_id": "AUTH-LOGIN-NEG-001",
+      "title": "Login with wrong password",
+      "priority": "medium",
+      "tags": ["regression", "auth", "negative"],
+      "data": {
+        "username": "qa_user",
+        "password": "wrong_password"
+      },
+      "expected": {
+        "error_message": "Invalid credentials"
+      }
+    }
+  ]
+}
