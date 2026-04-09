@@ -1,5 +1,6 @@
 import pytest
 
+from conftest import capture_failure_evidence
 from pages.element_page import ElementPage
 
 
@@ -13,10 +14,14 @@ class TestAddElementAdditional:
     def test_TC_Element_002_template_prefill_after_select(self, logged_in_driver, additional_test_data, auth_data):
         page = ElementPage(logged_in_driver)
         data = additional_test_data["elements"]["TC_Element_002_Template_Button"]
-        page.open_add_element(auth_data["base_url"])
-        page.select_category(data["category"])
-        assert page.get_title_value() == data["expected_title"]
-        assert page.preview_contains_text(data["expected_preview_text"])
+        try:
+            page.open_add_element(auth_data["base_url"])
+            page.select_category(data["category"])
+            assert page.get_title_value() == data["expected_title"]
+            assert page.preview_contains_text(data["expected_preview_text"])
+        except Exception:
+            capture_failure_evidence(logged_in_driver, "TC_Element_002")
+            raise
 
     def test_TC_Element_004_save_as_draft_redirects(self, logged_in_driver, additional_test_data, auth_data):
         page = ElementPage(logged_in_driver)
@@ -45,9 +50,13 @@ class TestAddElementAdditional:
     def test_TC_Element_011_change_type_updates_template(self, logged_in_driver, additional_test_data, auth_data):
         page = ElementPage(logged_in_driver)
         data = additional_test_data["elements"]["TC_Element_011_ChangeType"]
-        page.open_add_element(auth_data["base_url"])
-        page.select_category(data["initial_category"])
-        page.click_change_type()
-        page.select_category(data["changed_category"])
-        assert page.get_title_value() == data["expected_changed_title"]
-        assert page.preview_contains_text(data["expected_preview_text"])
+        try:
+            page.open_add_element(auth_data["base_url"])
+            page.select_category(data["initial_category"])
+            page.click_change_type()
+            page.select_category(data["changed_category"])
+            assert page.get_title_value() == data["expected_changed_title"]
+            assert page.preview_contains_text(data["expected_preview_text"])
+        except Exception:
+            capture_failure_evidence(logged_in_driver, "TC_Element_011")
+            raise

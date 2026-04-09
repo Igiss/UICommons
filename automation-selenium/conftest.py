@@ -2,6 +2,7 @@ import pytest
 import tempfile
 import requests
 from selenium import webdriver
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
@@ -12,6 +13,8 @@ from utils.data_loader import get_additional_test_data, get_auth_data, get_test_
 
 
 API_URL = "http://localhost:3000"
+REPORTS_DIR = Path(__file__).parent / "reports"
+SCREENSHOTS_DIR = REPORTS_DIR / "screenshots"
 
 
 def _auth_headers(auth_data):
@@ -47,6 +50,66 @@ def _create_comment(auth_data, component_id, content, parent_id=None):
     )
     response.raise_for_status()
     return response.json()
+
+
+def _safe_nodeid(nodeid: str) -> str:
+    return (
+        nodeid.replace("::", "__")
+        .replace("/", "_")
+        .replace("\\", "_")
+        .replace(":", "_")
+        .replace("[", "_")
+        .replace("]", "_")
+        .replace(" ", "_")
+    )
+
+
+def capture_failure_evidence(driver, test_id: str) -> Path | None:
+    SCREENSHOTS_DIR.mkdir(parents=True, exist_ok=True)
+    screenshot_path = SCREENSHOTS_DIR / f"{_safe_nodeid(test_id)}.png"
+    try:
+        if driver.save_screenshot(str(screenshot_path)):
+            return screenshot_path
+    except Exception:
+        return None
+    return None
+
+
+@pytest.hookimpl(hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    outcome = yield
+    report = outcome.get_result()
+    setattr(item, f"rep_{report.when}", report)
+
+
+@pytest.fixture(autouse=True)
+def capture_screenshot_on_failure(request):
+    yield
+
+    report = getattr(request.node, "rep_call", None)
+    if report is None or report.passed:
+        return
+
+    driver = request.node.funcargs.get("driver") or request.node.funcargs.get("logged_in_driver")
+    if driver is None:
+        return
+
+    SCREENSHOTS_DIR.mkdir(parents=True, exist_ok=True)
+    screenshot_name = f"{_safe_nodeid(request.node.nodeid)}.png"
+    screenshot_path = SCREENSHOTS_DIR / screenshot_name
+
+    try:
+        if not driver.save_screenshot(str(screenshot_path)):
+            return
+    except Exception:
+        return
+
+    html_plugin = request.config.pluginmanager.getplugin("html")
+    extra_plugin = getattr(pytest, "html", None) or html_plugin
+    if extra_plugin and hasattr(extra_plugin, "extras"):
+        extra = getattr(report, "extra", [])
+        extra.append(extra_plugin.extras.image(str(screenshot_path)))
+        report.extra = extra
 
 
 @pytest.fixture(scope="session")

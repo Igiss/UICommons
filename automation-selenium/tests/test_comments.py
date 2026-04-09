@@ -2,6 +2,7 @@ from datetime import datetime
 
 import pytest
 
+from conftest import capture_failure_evidence
 from pages.comment_page import CommentPage
 
 
@@ -43,21 +44,25 @@ class TestComments:
     def test_TC_COMMENT_024_max_length(self, logged_in_driver, test_data, auth_data):
         page = CommentPage(logged_in_driver)
         data = test_data["comments"]["TC_COMMENT_024_Boundary"]
-        page.open_comments(auth_data["base_url"])
-        content = data["repeat_char"] * data["repeat_count"]
-        page.add_comment(content)
-        alert_text = page.get_alert_text_if_present()
-        if alert_text is not None:
-            normalized = alert_text.lower()
-            assert (
-                "fail" in normalized
-                or "error" in normalized
-                or "max" in normalized
-                or "length" in normalized
-                or "too long" in normalized
-            )
-        else:
-            assert not page.wait_until_comment_visible(content, timeout=3)
+        try:
+            page.open_comments(auth_data["base_url"])
+            content = data["repeat_char"] * data["repeat_count"]
+            page.add_comment(content)
+            alert_text = page.get_alert_text_if_present()
+            if alert_text is not None:
+                normalized = alert_text.lower()
+                assert (
+                    "fail" in normalized
+                    or "error" in normalized
+                    or "max" in normalized
+                    or "length" in normalized
+                    or "too long" in normalized
+                )
+            else:
+                assert not page.wait_until_comment_visible(content, timeout=3)
+        except Exception:
+            capture_failure_evidence(logged_in_driver, "TC_COMMENT_024")
+            raise
 
     def test_TC_COMMENT_021_min_length(self, logged_in_driver, additional_test_data, auth_data, seeded_public_component):
         page = CommentPage(logged_in_driver)

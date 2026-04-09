@@ -1,0 +1,135 @@
+{
+  "challenges": {
+    "TC_CHL_001_HappyPath": {
+      "title": "Automation Test Challenge",
+      "description": "Challenge created by Selenium automation test",
+      "banner_url": "https://picsum.photos/800/400",
+      "start_date": "2026-05-01",
+      "end_date": "2026-06-01",
+      "rule": "Must use vanilla CSS",
+      "category_index": 0,
+      "prizes": ["2000", "1000", "500"]
+    },
+    "TC_CHL_003_RequiredFields": {
+      "expected_error": "required"
+    },
+    "TC_CHL_004_TitleSpace": {
+      "title": "   ",
+      "description": "Valid desc",
+      "banner_url": "https://picsum.photos/800/400",
+      "start_date": "2026-05-01",
+      "end_date": "2026-06-01"
+    },
+    "TC_CHL_005_DateLogic": {
+      "title": "Date Logic Test",
+      "description": "Testing date validation",
+      "banner_url": "https://picsum.photos/800/400",
+      "start_date": "2026-03-24",
+      "end_date": "2026-03-23"
+    },
+    "TC_CHL_007_AddRule": {
+      "rule_text": "Must be responsive"
+    },
+    "TC_CHL_010_PrizesDefault": {
+      "expected_1st": "2000",
+      "expected_2nd": "1000",
+      "expected_3rd": "500"
+    },
+    "TC_CHL_011_PrizesType": {
+      "invalid_prize": "abc@#"
+    },
+    "TC_CHL_014_Cancel": {
+      "title": "Cancel Test Challenge"
+    },
+    "TC_CHL_019_EmptyEntry": {
+      "expected_error": "provide"
+    },
+    "TC_CHL_027_RatingModal": {
+      "feedback": "Great design!"
+    },
+    "TC_CHL_004b_ValidTitle": {
+      "title": "Valid Challenge Title",
+      "description": "Valid desc",
+      "banner_url": "https://picsum.photos/800/400",
+      "start_date": "2026-05-01",
+      "end_date": "2026-06-01"
+    },
+    "TC_CHL_005b_ValidDateLogic": {
+      "title": "Valid Date Challenge",
+      "description": "Testing valid date logic",
+      "banner_url": "https://picsum.photos/800/400",
+      "start_date": "2026-03-23",
+      "end_date": "2026-03-24"
+    },
+    "TC_CHL_009b_SelectCategories": {
+      "category_index": 1
+    },
+    "TC_CHL_017b_BrowseChallenges": {
+      "interaction": "view_list"
+    },
+    "TC_CHL_018b_ChallengeDetail": {
+      "details_visible": ["title", "description", "rules"]
+    },
+    "TC_CHL_019b_EntryFormValidation": {
+      "expected_error": "provide"
+    },
+    "TC_CHL_027b_RatingModalUI": {
+      "elements_visible": ["modal", "textarea", "submit_button"]
+    }
+  },
+  "settings": {
+    "TC_PRF_001_HappyPath": {
+      "display_name": "Automation Tester",
+      "bio": "I love Selenium and JSON Data",
+      "location": "Vietnam"
+    },
+    "TC_PRF_002_EmptyName": {
+      "display_name": "",
+      "bio": "Test Bio",
+      "location": "Test Location"
+    },
+    "TC_PRF_003_InvalidURL": {
+      "twitter": "abcxyz",
+      "website": "not-a-url"
+    },
+    "TC_PRF_005_XSS": {
+      "display_name": "<script>alert(1)</script>",
+      "bio": "<img src=x onerror=alert('xss')>",
+      "location": "Vietnam"
+    },
+    "TC_PRF_006_Multiline": {
+      "display_name": "Multiline Tester",
+      "bio": "Dong 1\n\nDong 2\n\nDong 3",
+      "location": "Vietnam"
+    },
+    "TC_PRF_002b_ValidName": {
+      "display_name": "Valid Test Name",
+      "bio": "Test Bio",
+      "location": "Test Location"
+    },
+    "TC_PRF_003b_ValidURL": {
+      "twitter": "https://twitter.com/testuser",
+      "website": "https://example.com"
+    }
+  },
+  "profile": {
+    "TC_PRO_003_Tabs": {
+      "expected_tabs_own": ["Posts", "Variations", "In Review", "Rejected", "Drafts"],
+      "expected_tabs_other": ["Posts"]
+    },
+    "TC_PRO_008_Drafts": {
+      "empty_title": "No drafts yet",
+      "empty_desc": "Create"
+    },
+    "TC_PRO_010_EmptyStates": {
+      "in_review_msg": "No submissions in review",
+      "rejected_msg": "No rejected submissions"
+    },
+    "TC_PRO_005b_DeleteButton": {
+      "check_visible": true
+    },
+    "TC_PRO_009b_EmptyStateUI": {
+      "elements": ["empty_message", "create_button"]
+    }
+  }
+}

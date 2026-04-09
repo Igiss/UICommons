@@ -2,6 +2,7 @@ from datetime import datetime
 
 import pytest
 
+from conftest import capture_failure_evidence
 from pages.element_page import ElementPage
 
 
@@ -37,27 +38,38 @@ class TestAddElement:
     def test_TC_Element_028_xss_payloads(self, logged_in_driver, test_data, auth_data):
         page = ElementPage(logged_in_driver)
         payloads = test_data["elements"]["TC_Element_028_XSS"]
-
-        for item in payloads:
-            page.open_add_element(auth_data["base_url"])
-            page.fill_element_form("Button", item["title"], item["html"], item["css"])
-            page.submit()
+        try:
+            for item in payloads:
+                page.open_add_element(auth_data["base_url"])
+                page.fill_element_form("Button", item["title"], item["html"], item["css"])
+                page.submit()
+        except Exception:
+            capture_failure_evidence(logged_in_driver, "TC_Element_028")
+            raise
 
     def test_TC_Element_026_empty_code(self, logged_in_driver, test_data, auth_data):
         page = ElementPage(logged_in_driver)
         data = test_data["elements"]["TC_Element_026_Empty"]
-        page.open_add_element(auth_data["base_url"])
-        page.fill_element_form(data["category"], data["title"], data["html"], data["css"])
-        page.submit()
-        assert page.get_error()
+        try:
+            page.open_add_element(auth_data["base_url"])
+            page.fill_element_form(data["category"], data["title"], data["html"], data["css"])
+            page.submit()
+            assert page.get_error()
+        except Exception:
+            capture_failure_evidence(logged_in_driver, "TC_Element_026")
+            raise
 
     def test_TC_Element_025_title_spaces_only(self, logged_in_driver, additional_test_data, auth_data):
         page = ElementPage(logged_in_driver)
         data = additional_test_data["elements"]["TC_Element_025_TitleSpaces"]
-        page.open_add_element(auth_data["base_url"])
-        page.fill_element_form(data["category"], data["title"], data["html"], data["css"])
-        page.submit()
-        assert page.get_error()
+        try:
+            page.open_add_element(auth_data["base_url"])
+            page.fill_element_form(data["category"], data["title"], data["html"], data["css"])
+            page.submit()
+            assert page.get_error()
+        except Exception:
+            capture_failure_evidence(logged_in_driver, "TC_Element_025")
+            raise
 
     def test_TC_Element_029_unicode_inputs_render_stably(self, logged_in_driver, additional_test_data, auth_data):
         page = ElementPage(logged_in_driver)
